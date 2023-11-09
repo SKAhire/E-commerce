@@ -1,5 +1,5 @@
 
-import {LoginPage} from "./Routes.js";
+import {LoginPage, SignupPage} from "./Routes.js";
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -15,6 +15,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path='/login' element={<LoginPage />} />
+        <Route exact path='/sign-up' element={<SignupPage />} />
       </Routes>
     </Router>
     
