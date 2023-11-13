@@ -75,7 +75,7 @@ const Signup = () => {
                       id="file-input"
                       accept=".jpg,.jpeg,.png"
                       onChange={handleFileInputChange}
-                      className="sr-only"
+                      className="sr-only cursor-pointer"
                     />
                   </label>
                 </div>
