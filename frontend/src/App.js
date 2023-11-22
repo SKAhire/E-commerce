@@ -1,5 +1,5 @@
 
-import {LoginPage, SignupPage} from "./Routes.js";
+import {LoginPage, SignupPage, ActivationPage} from "./Routes.js";
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -16,6 +16,7 @@ function App() {
       <Routes>
         <Route exact path='/login' element={<LoginPage />} />
         <Route exact path='/sign-up' element={<SignupPage />} />
+        <Route exact path='/activation/:activation_token' element={<ActivationPage />} />
       </Routes>
     </Router>
     

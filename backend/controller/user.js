@@ -3,9 +3,11 @@ const path = require('path');
 const jwt = require('jsonwebtoken')
 const User = require('../model/user');
 const { upload } = require('../multer');
-const ErrorHandler = require('../middleware/error');
+const ErrorHandler = require("../utils/ErrorHandler");
 const fs = require('fs');
 const sendMail = require('../utils/SendMail');
+const catchAsyncError = require('../middleware/catchAsyncError');
+const sendToken = require('../utils/jwtToken');
 const router = express.Router();
 
 router.post('/create-user', upload.single('file'), async (req, res, next) => {
@@ -61,10 +63,41 @@ router.post('/create-user', upload.single('file'), async (req, res, next) => {
 
 // create activation token
 const createActivationToken = (user) => {
-    return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+    return jwt.sign(user, "thisistheactivationkey", {
         expiresIn: "5m",
     });
 }
 
-//
+//active user
+router.post("/activation", catchAsyncError(async(req, res, next)=>{
+    try {
+        const {activationToken} = req.body;
+        const newUser = jwt.verify(activationToken, "thisistheactivationkey");
+        
+        if(!newUser){
+            return next(new ErrorHandler("Invalid Token", 400))
+        }
+        console.log("test")
+
+        
+        const {name, email, password, avatar} = newUser;
+        let user = await User.findOne({email});
+        if(user){
+            return next(new ErrorHandler("User already exists!", 400))
+        }
+
+        user = await User.create({
+            name,
+            email,
+            avatar,
+            password,
+        });
+
+        sendToken(user, 201, res)
+
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500))
+    }
+}))
+
 module.exports = router

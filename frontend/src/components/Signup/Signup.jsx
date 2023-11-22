@@ -31,9 +31,7 @@ const Signup = () => {
     newForm.append("password", password);
 
     axios.post(`${server}/user/create-user`, newForm, config).then((res) => {
-      if(res.data.success === true){
-        navigate('/')
-      }
+     alert(res.messsage);
     }).catch((err) => {
       console.log(err)
     })
