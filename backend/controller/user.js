@@ -9,6 +9,8 @@ const sendMail = require('../utils/SendMail');
 const catchAsyncError = require('../middleware/catchAsyncError');
 const sendToken = require('../utils/jwtToken');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const { isAuthenticated } = require('../middleware/auth');
 
 router.post('/create-user', upload.single('file'), async (req, res, next) => {
     try {
@@ -113,13 +115,14 @@ router.post("/login-user", catchAsyncError(async(req, res, next)=>{
             return next(new ErrorHandler("Please provide valid credentials!", 400))
         }
 
-        const user = await User.findOne({ email }).select("+password");
-
+        const user = await User.findOne({ email }).select('+password');
         if(!user){
             return next(new ErrorHandler("User doesn't exist!", 400))
         }
 
-        const passValid = user.comparePassword(password);
+        // const passValid = user.comparePassword(password);
+        const passValid = await bcrypt.compare(password, user.password);
+
 
         if(!passValid){
             return next(new ErrorHandler("Please provide valid credentials!", 400))
@@ -128,6 +131,24 @@ router.post("/login-user", catchAsyncError(async(req, res, next)=>{
         sendToken(user, 201, res)
 
 
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}));
+
+//load user
+
+router.get("/get-user", isAuthenticated, catchAsyncError(async(res, req, next)=> {
+    try {
+        const user = await User.findById(req.user.id)
+        if(!user){
+            return next(new ErrorHandler("User doesn't exist!", 400))
+        }
+
+        res.status(200).json({
+            success: true,
+            user,
+        });
     } catch (error) {
         return next(new ErrorHandler(error.message, 500));
     }

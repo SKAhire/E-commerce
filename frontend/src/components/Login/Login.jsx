@@ -19,12 +19,12 @@ const Login = () => {
     await axios.post(`${server}/user/login-user`, {
       email,
       password,
-    }).then((res) => {
+    },{ withCredentials: true }).then((res) => {
       toast.success("Login Successfull!");
       navigate("/")
     }).catch((err) => {
-      // toast.error(err.response.data.message);
-      console.log(err.response.data.message);
+      toast.error(err.response.data.message);
+      // console.log(err.response.data.message);
     })
   }
 
