@@ -229,13 +229,13 @@ export const navItems = [
       title: "Gifts",
       subTitle: "",
       image_Url:
-        "https://securecdn.pymnts.com/wp-content/uploads/2014/11/Gifts-Photo-700x489.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrH0T0YSDUeO_6Q6FCE3WUo280qvhPc9scGw&usqp=CAU",
     },
     {
       id: 7,
       title: "Pet Care",
       subTitle: "",
-      image_Url: "https://cdn.openpr.com/T/c/Tc15444071_g.jpg",
+      image_Url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6P_arFMr4psItYgkETuLLBXFfDlLt1V2ECF-y2KqzhFKHWi_uoXaV6-TBLe9sLPGMxro&usqp=CAU",
     },
     {
       id: 8,
@@ -320,7 +320,6 @@ export const navItems = [
       rating: 5,
       total_sell: 80,
       stock: 10,
-      category:"Mobile & Tablets"
     },
     {
       id: 1,
@@ -351,7 +350,6 @@ export const navItems = [
       rating: 4,
       total_sell: 75,
       stock: 10,
-      category:"Computers & Laptop"
     },
     {
       id: 4,
@@ -413,7 +411,6 @@ export const navItems = [
       rating: 5,
       total_sell: 49,
       stock: 10,
-      category:"Shoes"
     },
     {
       id: 1,
