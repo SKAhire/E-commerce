@@ -85,7 +85,7 @@ const Headers = ({activeHeading}) => {
               </div>
             ) : null}
           </div>
-          <div className={`${styles.button} my-0`}>
+          <div className={`${styles.button} `} style={{margin: 0}}>
             <Link to="/seller">
               <h1 className="text-white flex items-center">
                 Become Seller <IoIosArrowForward className="ml-1" />
@@ -147,10 +147,8 @@ const Headers = ({activeHeading}) => {
                 </div>
                 <div className={`${styles.noramlFlex}`}>
                   <div className="relative cursor-pointer mr-[15px]">
-                    <CgProfile size={30} color="rgb(255 255 255/83%)" />
-                    <span className="absolute right-0 top-0 rounded-full bg-[#4a3b85] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                      0
-                    </span>
+                    <Link to="/login"><CgProfile size={30} color="rgb(255 255 255/83%)" /></Link>
+                    
                   </div>
                 </div>
               </div>
