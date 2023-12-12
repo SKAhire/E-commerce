@@ -271,11 +271,11 @@ export const navItems = [
       image_Url: [
         {
           public_id: "test",
-          url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+          url: "https://i.guim.co.uk/img/media/ee84f3423fa26941b198756e59236676a81dd6df/132_378_5253_3151/master/5253.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=780ea60557f3f55c7bdbacc49ef9bc43",
         },
         {
           public_id: "test",
-          url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+          url: "https://i.guim.co.uk/img/media/ee84f3423fa26941b198756e59236676a81dd6df/132_378_5253_3151/master/5253.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=780ea60557f3f55c7bdbacc49ef9bc43",
         },
       ],
       shop: {
@@ -330,11 +330,11 @@ export const navItems = [
       image_Url: [
         {
           public_id: "test",
-          url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+          url: "https://i.guim.co.uk/img/media/ee84f3423fa26941b198756e59236676a81dd6df/132_378_5253_3151/master/5253.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=780ea60557f3f55c7bdbacc49ef9bc43",
         },
         {
           public_id: "test",
-          url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+          url: "https://i.guim.co.uk/img/media/ee84f3423fa26941b198756e59236676a81dd6df/132_378_5253_3151/master/5253.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=780ea60557f3f55c7bdbacc49ef9bc43",
         },
       ],
       shop: {
@@ -602,9 +602,11 @@ export const navItems = [
     },
     {
       name: "Our Blog",
+      link: "/Blog"
     },
     {
       name: "Reviews",
+      link: "/reviews"
     },
   ];
   

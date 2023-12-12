@@ -3,7 +3,7 @@ import styles from "../../../styles/styles";
 import { Link } from "react-router-dom";
 
 
-function Banner() {
+function Hero() {
   return (
     <div
       className={`relative min-h-[70vh] 800px:min-h-[80vh] bg-no-repeat w-full ${styles.noramlFlex}`}
@@ -35,4 +35,4 @@ function Banner() {
   );
 }
 
-export default Banner;
+export default Hero;
