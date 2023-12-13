@@ -1,5 +1,5 @@
 import React from "react";
-import {AiFillFacebook, AiFillInstagram, AiFillYoutube, AiOutlineTwitter} from 'react-icons/ai'
+import {AiFillFacebook, AiFillGithub, AiFillInstagram, AiOutlineTwitter} from 'react-icons/ai'
 import { footerProductLinks, footerSupportLinks, footercompanyLinks } from "../../static/data";
 import { Link } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const Footer = () => {
                     <AiFillFacebook size={25} className="cursor-pointer" />
                     <AiOutlineTwitter size={25} style={{marginLeft: "15px", cursor: "pointer"}} />
                     <AiFillInstagram size={25} style={{marginLeft: "15px", cursor: "pointer"}} />
-                    <AiFillYoutube size={25} style={{marginLeft: "15px", cursor: "pointer"}} />
+                    <Link to={"https://github.com/SKAhire"} target="_blank"><AiFillGithub size={25} style={{marginLeft: "15px", cursor: "pointer"}} /></Link>
                 </div>
             </ul>
             <ul className="text-center sm:text-start">

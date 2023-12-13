@@ -1,5 +1,5 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage } from "./Routes.js";
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, } from "./Routes.js";
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -35,6 +35,10 @@ function App() {
           <Route exact path='/' element={<HomePage />} />
           <Route exact path='/login' element={<LoginPage />} />
           <Route exact path='/sign-up' element={<SignupPage />} />
+          <Route exact path='/products' element={<ProductsPage />} />
+          <Route exact path='/best-selling' element={<BestSellingPage />} />
+          <Route exact path='/events' element={<EventsPage />} />
+          <Route exact path='/FAQ' element={<FAQPage />} />
           <Route exact path='/activation/:activation_token' element={<ActivationPage />} />
         </Routes>
         <ToastContainer
