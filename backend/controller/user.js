@@ -138,7 +138,7 @@ router.post("/login-user", catchAsyncError(async(req, res, next)=>{
 
 //load user
 
-router.get("/get-user", isAuthenticated, catchAsyncError(async(res, req, next)=> {
+router.get("/get-user", isAuthenticated, catchAsyncError(async(req, res, next)=> {
     try {
         const user = await User.findById(req.user.id)
         if(!user){

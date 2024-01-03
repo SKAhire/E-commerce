@@ -10,6 +10,8 @@ import DropDown from "./DropDown";
 import NavBar from "./NavBar";
 import {useSelector} from "react-redux";
 import { backend_url } from "../../server";
+import Cart from "../Cart/Cart";
+import Wishlist from "../Wishlist/Wishlist";
 
 const Headers = ({activeHeading}) => {
   const {isAuthenticated, user} = useSelector((state) => state.user)
@@ -17,6 +19,9 @@ const Headers = ({activeHeading}) => {
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [openWishlist, setOpenWishlist] = useState(false);
+  
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -133,7 +138,7 @@ const Headers = ({activeHeading}) => {
               </div>
               <div className="flex">
                 <div className={`${styles.noramlFlex}`}>
-                  <div className="relative cursor-pointer mr-[15px]">
+                  <div className="relative cursor-pointer mr-[15px]" onClick={()=> setOpenWishlist(true)}>
                     <AiOutlineHeart size={30} color="rgb(255 255 255/83%)" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#4a3b85] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                       0
@@ -141,7 +146,7 @@ const Headers = ({activeHeading}) => {
                   </div>
                 </div>
                 <div className={`${styles.noramlFlex}`}>
-                  <div className="relative cursor-pointer mr-[15px]">
+                  <div className="relative cursor-pointer mr-[15px]" onClick={()=> setOpenCart(true)}>
                     <AiOutlineShoppingCart size={30} color="rgb(255 255 255/83%)" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#4a3b85] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                       0
@@ -154,7 +159,9 @@ const Headers = ({activeHeading}) => {
                     {
                       isAuthenticated ? (
                         <Link to="/profile">
-                          <img src={`${backend_url}/${user.avatar}`} alt="" className="w-[40px] h-[40px] rounded-full" />
+                          <img src={`${backend_url}//madara-1702551573990-149969847.png`} alt="" className="w-[40px] h-[40px] rounded-full" /> 
+                          {/* <img src={`${backend_url}/${user.avatar}`} alt="" className="w-[40px] h-[40px] rounded-full" />  */}
+
                           </Link>
                       )
                       : (
@@ -164,6 +171,21 @@ const Headers = ({activeHeading}) => {
                     
                   </div>
                 </div>
+
+                    {/* Cart pop up */}
+                    {
+                      openCart ? (
+                        <Cart setOpenCart={setOpenCart} />
+                      ) : null
+                    }
+
+                    {/* wishlist pop up */}
+                    {
+                      openWishlist ? (
+                        <Wishlist setOpenWishlist={setOpenWishlist} />
+                      ) : null
+                    }
+
               </div>
         </div>
       </div>
