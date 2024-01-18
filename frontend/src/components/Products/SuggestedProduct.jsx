@@ -8,6 +8,7 @@ const SuggestedProduct = ({data}) => {
     useEffect(() => {
       const d = productData && productData.filter((i) => i.category === data.category);
       setProducts(d);
+       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
   return (

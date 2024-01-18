@@ -159,8 +159,8 @@ const Headers = ({activeHeading}) => {
                     {
                       isAuthenticated ? (
                         <Link to="/profile">
-                          <img src={`${backend_url}//madara-1702551573990-149969847.png`} alt="" className="w-[40px] h-[40px] rounded-full" /> 
-                          {/* <img src={`${backend_url}/${user.avatar}`} alt="" className="w-[40px] h-[40px] rounded-full" />  */}
+                          {/* <img src={`${backend_url}/wallpaperflare-1705498442315-73567505.png`} alt={user} className="w-[40px] h-[40px] rounded-full" />   */}
+                          <img src={`${backend_url}/${user?.avatar}`} alt="profile" className="w-[40px] h-[40px] rounded-full" /> 
 
                           </Link>
                       )
