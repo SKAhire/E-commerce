@@ -46,15 +46,15 @@ const ProfileContent = ({ active }) => {
           <br />
           <br />
           <div className="w-full px-5">
-            <form onSubmit={handleSubmit} aria-required={true}>
-              <div className="w-full flex pb-3">
+            <form onSubmit={handleSubmit}>
+              <div className="w-full 800px:flex pb-3">
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Full Name:</label>
                   <input
                     type="text"
                     autoComplete="on"
                     required
-                    className={`${styles.input} p-2 !w-[95%]`}
+                    className={`${styles.input} p-2 !w-[95%] mb-4 800px:mb-0`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -64,7 +64,7 @@ const ProfileContent = ({ active }) => {
                   <input
                     type="email"
                     autoComplete="on"
-                    className={`${styles.input} p-2 !w-[95%]`}
+                    className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -77,7 +77,7 @@ const ProfileContent = ({ active }) => {
                   <input
                     type="number"
                     autoComplete="on"
-                    className={`${styles.input} p-2 !w-[95%]`}
+                    className={`${styles.input} p-2 !w-[95%] mb-4 800px:mb-0`}
                     value={phoneNumber}
                     maxLength={10}
                     onChange={(e) => setPhoneNumber(e.target.value)}
@@ -90,20 +90,20 @@ const ProfileContent = ({ active }) => {
                     type="number"
                     autoComplete="on"
                     maxLength={6}
-                    className={`${styles.input} p-2 !w-[95%]`}
+                    className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
                     value={zipNumber}
                     onChange={(e) => setZipNumber(e.target.value)}
                     required
                   />
                 </div>
               </div>
-              <div className="w-full flex pb-3">
+              <div className="w-full 800px:flex pb-3">
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Address 1:</label>
                   <input
                     type="address"
                     autoComplete="on"
-                    className={`${styles.input} p-2 !w-[95%]`}
+                    className={`${styles.input} p-2 !w-[95%] mb-4 800px:mb-0`}
                     value={address1}
                     maxLength={10}
                     onChange={(e) => setAddress1(e.target.value)}
@@ -116,7 +116,7 @@ const ProfileContent = ({ active }) => {
                     type="address"
                     autoComplete="on"
                     maxLength={6}
-                    className={`${styles.input} p-2 !w-[95%]`}
+                    className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
                     value={address2}
                     onChange={(e) => setAddress2(e.target.value)}
                     required
@@ -126,7 +126,7 @@ const ProfileContent = ({ active }) => {
               <input
                 type="submit"
                 value="Update"
-                className="w-[200px] h-[40px] border font-[600] border-purple-600 text-center rounded-[3px] text-purple-600 mt-8 cursor-pointer hover:bg-purple-600 hover:text-white"
+                className="w-[200px] h-[40px] border font-[600] border-purple-600 text-center rounded-[3px] text-purple-600 mt-6 mb-2 cursor-pointer hover:bg-purple-600 hover:text-white"
               />
             </form>
           </div>

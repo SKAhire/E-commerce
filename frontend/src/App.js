@@ -29,7 +29,7 @@ function App() {
     //   toast.error(err.response.data.message)
     // })
 
-  })
+  }, [])
 
   return (
     <>
