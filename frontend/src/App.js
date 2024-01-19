@@ -1,5 +1,5 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, } from "./Routes.js";
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, } from "./Routes.js";
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -8,21 +8,24 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loadUser } from "./redux/actions/user.js";
 import Store from "./redux/store.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import { useSelector } from "react-redux";
-
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 
 function App() {
+
+  const [stripeApikey, setStripeApiKey] = useState("");
   const { isAuthenticated } = useSelector((state) => state.user)
 
   useEffect(() => {
 
     Store.dispatch(loadUser());
-
+    setStripeApiKey("somerandomtext")
     // axios.get(`${server}/user/get-user`,{ withCredentials: true }).then((res) => {
     //   console.log(res.data)
     // }).catch((err)=>{
@@ -33,8 +36,21 @@ function App() {
 
   return (
     <>
-
       <Router>
+        {stripeApikey && (
+          <Elements stripe={loadStripe(stripeApikey)}>
+            <Routes>
+              <Route
+                path="/payment"
+                element={
+                  // <ProtectedRoute>
+                    <PaymentPage />
+                  // </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Elements>
+        )}
         <Routes>
           <Route exact path='/' element={<HomePage />} />
           <Route exact path='/login' element={<LoginPage />} />
@@ -45,6 +61,15 @@ function App() {
           <Route exact path='/order/success/:name' element={<OrderSuccessPage />} />
           <Route exact path='/events' element={<EventsPage />} />
           <Route exact path='/FAQ' element={<FAQPage />} />
+          <Route
+            path="/checkout"
+            element={
+              // <ProtectedRoute>
+              <CheckoutPage />
+              // </ProtectedRoute>
+            }
+          />
+
           <Route exact path='/profile' element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
               <ProfilePage />
