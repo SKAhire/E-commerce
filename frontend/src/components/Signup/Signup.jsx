@@ -72,7 +72,7 @@ const Signup = () => {
                 <div className="my-4 text-center">
                   <label
                     htmlFor="file-input"
-                    className=" px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 "
+                    className=" px-4 py-2 border border-gray-300 cursor-pointer rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 "
                   >
                     <span>Set Avatar</span>
                     <input
