@@ -34,7 +34,7 @@ const ShopCreate = () => {
       newForm.append("email", email);
       newForm.append("password", password);
   
-      axios.post(`${server}/user/create-user`, newForm, config).then((res) => {
+      axios.post(`${server}/shop/create-shop`, newForm, config).then((res) => {
         toast.success(res.data.message);
         setName("")
         setEmail("")
@@ -277,7 +277,7 @@ const ShopCreate = () => {
               </div>
               <div className={`${styles.noramlFlex} w-full`}>
                 <h4>Already have an account? </h4>
-                <Link to="/login" className="text-purple-600 pl-2">
+                <Link to="/shop-login" className="text-purple-600 pl-2">
                   Login
                 </Link>
               </div>

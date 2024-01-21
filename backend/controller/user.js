@@ -45,7 +45,7 @@ router.post('/create-user', upload.single('file'), async (req, res, next) => {
         try {
             await sendMail({
                 email: user.email,
-                subject: "Activate your account.",
+                subject: "Activate your ShopNow account.",
                 message: `Hello ${user.name}, please click on the link below to activate your account: ${activationUrl}`,
             });
 
