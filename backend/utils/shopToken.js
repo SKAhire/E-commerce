@@ -1,6 +1,6 @@
 // creating and saving the token in cookies
-const sendShopToken = (user, statusCode, res) => {
-    const token = user.getJwtToken();
+const sendShopToken = (shop, statusCode, res) => {
+    const shopToken = shop.getJwtToken();
 
     // Options for cookies
     const options = {
@@ -9,10 +9,10 @@ const sendShopToken = (user, statusCode, res) => {
         
     };
 
-    res.status(statusCode).cookie("shop_token", token, options).json({
+    res.status(statusCode).cookie("shop_token", shopToken, options).json({
         success: true,
-        user,
-        token,
+        shop,
+        shopToken,
     });
 };
 

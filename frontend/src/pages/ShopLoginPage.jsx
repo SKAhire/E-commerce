@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import ShopCreate from '../components/Shop/ShopCreate'
+import ShopLogin from '../components/Shop/ShopLogin'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const ShopCreatePage = () => {
+const ShopLoginPage = () => {
   const {isShopAuthenticated, shop} = useSelector((state) => state.shop)
   const navigate = useNavigate();
 
@@ -14,9 +14,9 @@ const ShopCreatePage = () => {
   }, [])
   return (
     <div>
-      <ShopCreate />
+      <ShopLogin/>
     </div>
   )
 }
 
-export default ShopCreatePage
+export default ShopLoginPage

@@ -1,5 +1,6 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, ShopCreatePage, ShopActivationPage, } from "./Routes.js";
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, ShopCreatePage, ShopActivationPage, ShopLoginPage, } from "./Routes.js";
+import { ShopHomePage } from './ShopRoutes.js'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -9,9 +10,10 @@ import {
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
-import { loadUser } from "./redux/actions/user.js";
+import { loadShop, loadUser } from "./redux/actions/user.js";
 import Store from "./redux/store.js";
 import ProtectedRoute from "./ProtectedRoute.js";
+import ShopProtectedRoute from "./ShopPreotectedRoute.js";
 import { useSelector } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -21,11 +23,14 @@ function App() {
 
   const [stripeApikey, setStripeApiKey] = useState("");
   const { isAuthenticated } = useSelector((state) => state.user)
+  const { isShopAuthenticated } = useSelector((state) => state.shop)
 
   useEffect(() => {
 
     Store.dispatch(loadUser());
+    Store.dispatch(loadShop());
     setStripeApiKey("somerandomtext")
+
     // axios.get(`${server}/user/get-user`,{ withCredentials: true }).then((res) => {
     //   console.log(res.data)
     // }).catch((err)=>{
@@ -76,8 +81,18 @@ function App() {
             </ProtectedRoute>
           } />
           <Route exact path='/activation/:activation_token' element={<ActivationPage />} />
+
+          {/* shop routes */}
           <Route exact path='/shop/activation/:activation_token' element={<ShopActivationPage />} />
           <Route exact path='/shop-create' element={<ShopCreatePage />} />
+          <Route exact path='/shop-login' element={<ShopLoginPage />} />
+          <Route exact path='/shop/:id' element={
+            <ShopProtectedRoute isShopAuthenticated={isShopAuthenticated}>
+              <ShopHomePage />
+            </ShopProtectedRoute>
+          } />
+
+
         </Routes>
         <ToastContainer
           position="top-center"

@@ -12,6 +12,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { isAuthenticated } = require('../middleware/auth');
 
+// create user
 router.post('/create-user', upload.single('file'), async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
