@@ -54,7 +54,7 @@ const ShopSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    zipCode: {
+    zip: {
         type: Number,
         required: true
     },

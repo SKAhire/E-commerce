@@ -1,5 +1,5 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, ShopCreatePage, } from "./Routes.js";
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, ShopCreatePage, ShopActivationPage, } from "./Routes.js";
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -76,6 +76,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route exact path='/activation/:activation_token' element={<ActivationPage />} />
+          <Route exact path='/shop/activation/:activation_token' element={<ShopActivationPage />} />
           <Route exact path='/shop-create' element={<ShopCreatePage />} />
         </Routes>
         <ToastContainer

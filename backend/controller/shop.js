@@ -13,19 +13,19 @@ const bcrypt = require('bcryptjs');
 const { isAuthenticated } = require('../middleware/auth');
 
 // Create Shop
-router.post('/create-shop', upload.single('file'), async(req, res, next) => {
+router.post('/create-shop', upload.single('file'), async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        const shopEmail = await Shop.findOne({email})
+        const shopEmail = await Shop.findOne({ email })
 
-        if(shopEmail){
+        if (shopEmail) {
             const fileName = req.file.filename;
             const filePath = `uploads/${fileName}`;
-            fs.unlink(filePath, (err)=>{
-                if(err){
+            fs.unlink(filePath, (err) => {
+                if (err) {
                     console.log(err)
                     return res.status(500).json({
-                    message: "Error Deleting the File!",
+                        message: "Error Deleting the File!",
                     })
                 }
             })
@@ -42,23 +42,23 @@ router.post('/create-shop', upload.single('file'), async(req, res, next) => {
             avatar: fileUrl,
             phoneNumber: req.body.phoneNumber,
             address: req.body.address,
-            zipCode: req.body.zip,
+            zip: req.body.zip,
         }
 
         const activationToken = createActivationToken(shop);
-        const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+        const activationUrl = `http://localhost:3000/shop/activation/${activationToken}`;
 
         try {
-           await sendMail({
-            email: shop.email,
-            subject: "Activate your ShopNow account.",
-            message: `Hello ${shop.name}, please click on the link below to activate your account: ${activationUrl}`,
-           });
+            await sendMail({
+                email: shop.email,
+                subject: "Activate your ShopNow shop.",
+                message: `Hello ${shop.name}, please click on the link below to activate your shop account: ${activationUrl}`,
+            });
 
-           res.status(201).json({
-            success: true,
-            message: `Please check your email ${shop.email} to activate your account!`
-           })
+            res.status(201).json({
+                success: true,
+                message: `Please check your email ${shop.email} to activate your account!`
+            })
 
         } catch (error) {
             return next(new ErrorHandler(error.message, 500))
@@ -88,7 +88,7 @@ router.post("/activation", catchAsyncError(async (req, res, next) => {
         }
 
 
-        const { name, email, password, avatar } = newShop;
+        const { name, email, password, avatar, phoneNumber, address, zip } = newShop;
         let shop = await Shop.findOne({ email });
         if (!shop) {
             shop = await Shop.create({
@@ -96,6 +96,9 @@ router.post("/activation", catchAsyncError(async (req, res, next) => {
                 email,
                 avatar,
                 password,
+                phoneNumber,
+                address,
+                zip,
             });
 
             sendShopToken(shop, 201, res)
