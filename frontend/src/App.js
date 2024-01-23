@@ -1,6 +1,6 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, ShopCreatePage, ShopActivationPage, ShopLoginPage, } from "./Routes.js";
-import { ShopHomePage } from './ShopRoutes.js'
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, } from "./Routes/Routes.js";
+import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, } from './Routes/ShopRoutes.js'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -12,9 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import { loadShop, loadUser } from "./redux/actions/user.js";
 import Store from "./redux/store.js";
-import ProtectedRoute from "./ProtectedRoute.js";
-import ShopProtectedRoute from "./ShopPreotectedRoute.js";
-import { useSelector } from "react-redux";
+import ProtectedRoute from "./Routes/ProtectedRoute.js";
+import ShopProtectedRoute from "./Routes/ShopPreotectedRoute.js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -22,8 +21,8 @@ import { loadStripe } from "@stripe/stripe-js";
 function App() {
 
   const [stripeApikey, setStripeApiKey] = useState("");
-  const { isAuthenticated } = useSelector((state) => state.user)
-  const { isShopAuthenticated } = useSelector((state) => state.shop)
+
+
 
   useEffect(() => {
 
@@ -48,9 +47,9 @@ function App() {
               <Route
                 path="/payment"
                 element={
-                  // <ProtectedRoute>
+                  <ProtectedRoute>
                     <PaymentPage />
-                  // </ProtectedRoute>
+                  </ProtectedRoute>
                 }
               />
             </Routes>
@@ -69,14 +68,14 @@ function App() {
           <Route
             path="/checkout"
             element={
-              // <ProtectedRoute>
-              <CheckoutPage />
-              // </ProtectedRoute>
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
             }
           />
 
           <Route exact path='/profile' element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
           } />
@@ -87,8 +86,18 @@ function App() {
           <Route exact path='/shop-create' element={<ShopCreatePage />} />
           <Route exact path='/shop-login' element={<ShopLoginPage />} />
           <Route exact path='/shop/:id' element={
-            <ShopProtectedRoute isShopAuthenticated={isShopAuthenticated}>
+            <ShopProtectedRoute>
               <ShopHomePage />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard' element={
+            <ShopProtectedRoute>
+              <ShopDashboardPage />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-create-product' element={
+            <ShopProtectedRoute>
+              <ShopCreateProductPage />
             </ShopProtectedRoute>
           } />
 

@@ -148,7 +148,6 @@ router.post("/login-shop", catchAsyncError(async(req, res, next)=>{
 
 router.get("/get-shop", isShopAuthenticated, catchAsyncError(async(req, res, next)=> {
     try {
-        console.log(req.shop)
         const shop = await Shop.findById(req.shop.id)
         if(!shop){
             return next(new ErrorHandler("Shop doesn't exist!", 400))
