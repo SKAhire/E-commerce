@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { createProduct } from "../../redux/actions/product";
+import { createEvent } from "../../redux/actions/event";
 import { toast } from "react-toastify";
 
-const CreateProduct = () => {
+const CreateEvent = () => {
   const { shop } = useSelector((state) => state.shop);
-  const { success, error } = useSelector((state) => state.product);
+  const { success, error } = useSelector((state) => state.event);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,26 +20,48 @@ const CreateProduct = () => {
   const [originalPrice, setOriginalPrice] = useState();
   const [discountPrice, setDiscountPrice] = useState();
   const [stock, setStock] = useState();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
 useEffect(() => {
   if(error){
     toast.error(error);
   }
   if(success){
-    navigate('/dashboard-products')
-    toast.success("Product created successfully!")
+    navigate('/dashboard-events')
+    toast.success("Event created successfully!")
     window.location.reload(true);
   }
 }, [dispatch, error, success])
 
 
+// handle start date for event
+ const handleStartDateChange = (e) => {
+    const startDate = new Date(e.target.value)
+    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000)
+    setStartDate(startDate)
+    setEndDate(null)
+    document.getElementById("end-date").min = minEndDate.toISOString().slice(0, 10)
+ }
 
+//  handle end date for event
+const handleEndDateChange = (e) => {
+    const endDate = new Date(e.target.value)
+    setEndDate(endDate)
+}
+
+const today = new Date().toISOString().slice(0, 10)
+const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10) : today;
+
+// handle image array
   const handleImageChange = (e) => {
     e.preventDefault();
 
     let files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
+
+//   form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -56,13 +78,15 @@ useEffect(() => {
     newForm.append("discountPrice", discountPrice)
     newForm.append("stock", stock)
     newForm.append("shopId", shop._id)
-    dispatch(createProduct(newForm))
+    newForm.append("start_Date", startDate.toISOString())
+    newForm.append("finish_Date", endDate.toISOString())
+    dispatch(createEvent(newForm))
   };
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-      <h5 className="text-center text-[30px] font-Poppins">Create Product</h5>
+      <h5 className="text-center text-[30px] font-Poppins">Create Event</h5>
 
-      {/* create product form */}
+      {/* create Event form */}
       <form onSubmit={handleSubmit}>
         <br />
         <div>
@@ -73,7 +97,7 @@ useEffect(() => {
             type="text"
             name="name"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
-            placeholder="Enter your product name..."
+            placeholder="Enter your event product name..."
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -88,7 +112,7 @@ useEffect(() => {
           rows={8}
             name="description"
             className="mt-2 appearance-none block w-full py-2 px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
-            placeholder="Enter your product description..."
+            placeholder="Enter your event description..."
             onChange={(e) => setDescription(e.target.value)}>{description}</textarea>
         </div>
         <br />
@@ -118,7 +142,7 @@ useEffect(() => {
             type="text"
             name="tags"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
-            placeholder="Enter your product tags..."
+            placeholder="Enter your event tags..."
             value={tags}
             onChange={(e) => setTags(e.target.value)}
           />
@@ -130,7 +154,7 @@ useEffect(() => {
             type="number"
             name="price"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
-            placeholder="Enter your product price..."
+            placeholder="Enter your event product price..."
             value={originalPrice}
             onChange={(e) => setOriginalPrice(e.target.value)}
           />
@@ -156,11 +180,42 @@ useEffect(() => {
           </label>
           <input
             type="number"
-            name="discountPrice"
+            name="stock"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
             placeholder="Enter your product stock..."
             value={stock}
             onChange={(e) => setStock(e.target.value)}
+          />
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Event Start Date<span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="start-date"
+            id="start-date"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
+            placeholder="Enter event start date..."
+            value={startDate ? startDate.toISOString().slice(0, 10) : ""}
+            onChange={handleStartDateChange}
+            min={today}
+          />
+        </div>
+        <div>
+          <label className="pb-2">
+            Event End Date<span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="end-date"
+            id="end-date"
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
+            placeholder="Enter event end date..."
+            value={endDate ? endDate.toISOString().slice(0, 10) : ""}
+            onChange={handleEndDateChange}
+            min={minEndDate}
           />
         </div>
         <br />
@@ -208,4 +263,4 @@ useEffect(() => {
   );
 };
 
-export default CreateProduct;
+export default CreateEvent;

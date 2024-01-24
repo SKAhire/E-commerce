@@ -1,6 +1,6 @@
 
 import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, } from "./Routes/Routes.js";
-import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, } from './Routes/ShopRoutes.js'
+import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, } from './Routes/ShopRoutes.js'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -103,6 +103,16 @@ function App() {
           <Route exact path='/dashboard-products' element={
             <ShopProtectedRoute>
               <ShopAllPRoducts />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-create-event' element={
+            <ShopProtectedRoute>
+              <ShopCreateEvent />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-events' element={
+            <ShopProtectedRoute>
+              <ShopAllEvents />
             </ShopProtectedRoute>
           } />
 
