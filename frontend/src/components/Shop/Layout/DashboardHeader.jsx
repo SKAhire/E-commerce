@@ -24,43 +24,38 @@ const DashboardHeader = () => {
           <Link to="/dashboard-coupons" className="800px:block hidden">
             <AiOutlineGift
               size={30}
-              color="#555"
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-[#555] hover:text-purple-600"
             />
           </Link>
           <Link to="/dashboard-events" className="800px:block hidden">
             <MdOutlineLocalOffer
               size={30}
-              color="#555"
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-[#555] hover:text-purple-600"
             />
           </Link>
           <Link to="/dashboard-products" className="800px:block hidden">
             <FiShoppingBag
               size={30}
-              color="#555"
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-[#555] hover:text-purple-600"
             />
           </Link>
           <Link to="/dashboard-orders" className="800px:block hidden">
             <FiPackage
               size={30}
-              color="#555"
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-[#555] hover:text-purple-600"
             />
           </Link>
           <Link to="/dashboard-messages" className="800px:block hidden">
             <BiMessageSquareDetail
               size={30}
-              color="#555"
-              className="mx-5 cursor-pointer"
+              className="mx-5 cursor-pointer text-[#555] hover:text-purple-600"
             />
           </Link>
           <Link to={`/shop/${shop._id}`}>
           <img
             src={`${backend_url}/${shop?.avatar}`}
             alt=""
-            className="w-[50px] h-[50px] rounded-full object-cover"
+            className="w-[50px] h-[50px] rounded-full object-cover hover:border-[3px] hover:border-purple-600"
           />
         </Link>
         </div>
