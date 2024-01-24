@@ -162,4 +162,21 @@ router.get("/get-shop", isShopAuthenticated, catchAsyncError(async(req, res, nex
     }
 }))
 
+// logout from shop
+router.get("/logout-shop", isShopAuthenticated, catchAsyncError(async(req, res, next) => {
+    try {
+        res.cookie("shop_token", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true,
+        })
+
+        res.status(201).json({
+            success: true,
+            message: "Logout Successfull!"
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
+
 module.exports = router
