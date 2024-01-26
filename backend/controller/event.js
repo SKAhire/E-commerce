@@ -35,6 +35,19 @@ router.post("/create-event", upload.array("images"), catchAsyncError(async (req,
     }
 }));
 
+// get all events
+router.get("/get-all-events", async (req, res, next) => {
+    try {
+      const event = await Event.find();
+      res.status(201).json({
+        success: true,
+        event,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  });
+
 // get all events of a shop
 router.get("/get-all-events-shop/:id", catchAsyncError(async (req, res, next) => {
     try {

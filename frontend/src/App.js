@@ -17,6 +17,7 @@ import ShopProtectedRoute from "./Routes/ShopPreotectedRoute.js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { getAllProducts } from "./redux/actions/product.js";
+import { getAllEvents } from "./redux/actions/event.js";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
     Store.dispatch(loadUser());
     Store.dispatch(loadShop());
     Store.dispatch(getAllProducts());
+    Store.dispatch(getAllEvents());
     setStripeApiKey("somerandomtext")
 
     // axios.get(`${server}/user/get-user`,{ withCredentials: true }).then((res) => {

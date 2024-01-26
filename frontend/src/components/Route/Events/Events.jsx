@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from '../../../styles/styles';
 import EventCard from './EventCard'
+import { useSelector } from 'react-redux';
 
 
 function Events() {
+  const {allEvents,isLoading} = useSelector((state) => state.event);  
   return (
     <div>
     <div className={`${styles.section}`}>
@@ -12,7 +14,7 @@ function Events() {
       </div>
       <div className="w-full grid">
           <div className="w-full-grid">
-            <EventCard />
+            <EventCard data={allEvents && allEvents[0]} />
           </div>
       </div>
     </div>
