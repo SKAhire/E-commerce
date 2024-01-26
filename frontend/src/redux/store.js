@@ -4,6 +4,7 @@ import { cartReducer } from "./reducers/cart";
 import { shopReducer } from "./reducers/shop";
 import { productReducer } from "./reducers/product";
 import { eventReducer } from "./reducers/event";
+import { couponReducer } from "./reducers/coupons";
 
 const Store = configureStore({
     reducer:{
@@ -12,6 +13,7 @@ const Store = configureStore({
         shop: shopReducer,
         product: productReducer,
         event: eventReducer,
+        coupon: couponReducer,
     },
 });
 

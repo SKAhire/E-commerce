@@ -79,4 +79,21 @@ router.delete("/delete-shop-product/:id", isShopAuthenticated, catchAsyncError(a
         return next(new ErrorHandler(error, 400))
     }
 }))
+
+// get all products
+router.get(
+    "/get-all-products",
+    catchAsyncError(async (req, res, next) => {
+      try {
+        const product = await Product.find();
+  
+        res.status(201).json({
+          success: true,
+          product,
+        });
+      } catch (error) {
+        return next(new ErrorHandler(error, 400));
+      }
+    })
+  );
 module.exports = router;

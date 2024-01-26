@@ -1,6 +1,6 @@
 
 import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, } from "./Routes/Routes.js";
-import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, } from './Routes/ShopRoutes.js'
+import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, } from './Routes/ShopRoutes.js'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -16,6 +16,7 @@ import ProtectedRoute from "./Routes/ProtectedRoute.js";
 import ShopProtectedRoute from "./Routes/ShopPreotectedRoute.js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { getAllProducts } from "./redux/actions/product.js";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
 
     Store.dispatch(loadUser());
     Store.dispatch(loadShop());
+    Store.dispatch(getAllProducts());
     setStripeApiKey("somerandomtext")
 
     // axios.get(`${server}/user/get-user`,{ withCredentials: true }).then((res) => {
@@ -65,6 +67,7 @@ function App() {
           <Route exact path='/order/success/:name' element={<OrderSuccessPage />} />
           <Route exact path='/events' element={<EventsPage />} />
           <Route exact path='/FAQ' element={<FAQPage />} />
+          
           <Route
             path="/checkout"
             element={
@@ -85,6 +88,7 @@ function App() {
           <Route exact path='/shop/activation/:activation_token' element={<ShopActivationPage />} />
           <Route exact path='/shop-create' element={<ShopCreatePage />} />
           <Route exact path='/shop-login' element={<ShopLoginPage />} />
+          <Route exact path='/shop/preview/:id' element={<ShopPreviewPage />} />
           <Route exact path='/shop/:id' element={
             <ShopProtectedRoute>
               <ShopHomePage />
@@ -113,6 +117,11 @@ function App() {
           <Route exact path='/dashboard-events' element={
             <ShopProtectedRoute>
               <ShopAllEvents />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-coupons' element={
+            <ShopProtectedRoute>
+              <ShopAllCoupons />
             </ShopProtectedRoute>
           } />
 

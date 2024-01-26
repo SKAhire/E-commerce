@@ -49,7 +49,7 @@ const eventSchema = new Schema({
         require: true,
     },
     shop:{
-        type: String,
+        type: Object,
         require: true,
     },
     sold_out:{

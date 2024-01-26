@@ -27,16 +27,16 @@ export const createProduct = (newForm) => async (dispatch) => {
 export const getAllProductsShop = (id) => async(dispatch) => {
     try {
         dispatch({
-            type: "getAllProductsRequest",
+            type: "getAllProductsShopRequest",
         });
         const { data } = await axios.get(`${server}/product/get-all-products-shop/${id}`)
         dispatch({
-            type: "getAllProductsSuccess",
+            type: "getAllProductsShopSuccess",
             payload: data.product,
         })
     } catch (error) {
         dispatch({
-            type: "getAllProductsFail",
+            type: "getAllProductsShopFail",
             payload: error.response.data.message,
         })
     }
@@ -60,3 +60,23 @@ export const deleteShopProduct = (id) => async(dispatch) => {
         })
     }
 }
+
+// get all products
+export const getAllProducts = () => async (dispatch) => {
+    try {
+      dispatch({
+        type: "getAllProductsRequest",
+      });
+  
+      const { data } = await axios.get(`${server}/product/get-all-products`);
+      dispatch({
+        type: "getAllProductsSuccess",
+        payload: data.product,
+      });
+    } catch (error) {
+      dispatch({
+        type: "getAllProductsFail",
+        payload: error.response.data.message,
+      });
+    }
+  };

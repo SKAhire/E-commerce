@@ -23,37 +23,42 @@ const CreateEvent = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-useEffect(() => {
-  if(error){
-    toast.error(error);
-  }
-  if(success){
-    navigate('/dashboard-events')
-    toast.success("Event created successfully!")
-    window.location.reload(true);
-  }
-}, [dispatch, error, success])
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      navigate("/dashboard-events");
+      toast.success("Event created successfully!");
+      window.location.reload(true);
+    }
+  }, [dispatch, error, success]);
 
+  // handle start date for event
+  const handleStartDateChange = (e) => {
+    const startDate = new Date(e.target.value);
+    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+    setStartDate(startDate);
+    setEndDate(null);
+    document.getElementById("end-date").min = minEndDate
+      .toISOString()
+      .slice(0, 10);
+  };
 
-// handle start date for event
- const handleStartDateChange = (e) => {
-    const startDate = new Date(e.target.value)
-    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000)
-    setStartDate(startDate)
-    setEndDate(null)
-    document.getElementById("end-date").min = minEndDate.toISOString().slice(0, 10)
- }
+  //  handle end date for event
+  const handleEndDateChange = (e) => {
+    const endDate = new Date(e.target.value);
+    setEndDate(endDate);
+  };
 
-//  handle end date for event
-const handleEndDateChange = (e) => {
-    const endDate = new Date(e.target.value)
-    setEndDate(endDate)
-}
+  const today = new Date().toISOString().slice(0, 10);
+  const minEndDate = startDate
+    ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .slice(0, 10)
+    : today;
 
-const today = new Date().toISOString().slice(0, 10)
-const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10) : today;
-
-// handle image array
+  // handle image array
   const handleImageChange = (e) => {
     e.preventDefault();
 
@@ -61,7 +66,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
     setImages((prevImages) => [...prevImages, ...files]);
   };
 
-//   form submit
+  //   form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -69,18 +74,18 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
 
     images.forEach((image) => {
       newForm.append("images", image);
-    })
-    newForm.append("name", name)
-    newForm.append("description", description)
-    newForm.append("category", category)
-    newForm.append("tags", tags)
-    newForm.append("originalPrice", originalPrice)
-    newForm.append("discountPrice", discountPrice)
-    newForm.append("stock", stock)
-    newForm.append("shopId", shop._id)
-    newForm.append("start_Date", startDate.toISOString())
-    newForm.append("finish_Date", endDate.toISOString())
-    dispatch(createEvent(newForm))
+    });
+    newForm.append("name", name);
+    newForm.append("description", description);
+    newForm.append("category", category);
+    newForm.append("tags", tags);
+    newForm.append("originalPrice", originalPrice);
+    newForm.append("discountPrice", discountPrice);
+    newForm.append("stock", stock);
+    newForm.append("shopId", shop._id);
+    newForm.append("start_Date", startDate.toISOString());
+    newForm.append("finish_Date", endDate.toISOString());
+    dispatch(createEvent(newForm));
   };
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
@@ -94,6 +99,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Name <span className="text-red-500">*</span>
           </label>
           <input
+            required
             type="text"
             name="name"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
@@ -108,12 +114,15 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Description <span className="text-red-500">*</span>
           </label>
           <textarea
-          cols={30}
-          rows={8}
+            cols={30}
+            rows={8}
             name="description"
             className="mt-2 appearance-none block w-full py-2 px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
             placeholder="Enter your event description..."
-            onChange={(e) => setDescription(e.target.value)}>{description}</textarea>
+            onChange={(e) => setDescription(e.target.value)}
+          >
+            {description}
+          </textarea>
         </div>
         <br />
         <div>
@@ -139,6 +148,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
         <div>
           <label className="pb-2">Tags</label>
           <input
+            required
             type="text"
             name="tags"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
@@ -151,6 +161,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
         <div>
           <label className="pb-2">Original Price</label>
           <input
+            required
             type="number"
             name="price"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
@@ -165,6 +176,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Price (with Discount)<span className="text-red-500">*</span>
           </label>
           <input
+            required
             type="number"
             name="discountPrice"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
@@ -179,6 +191,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Product Stock<span className="text-red-500">*</span>
           </label>
           <input
+            required
             type="number"
             name="stock"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
@@ -193,6 +206,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Event Start Date<span className="text-red-500">*</span>
           </label>
           <input
+            required
             type="date"
             name="start-date"
             id="start-date"
@@ -208,6 +222,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Event End Date<span className="text-red-500">*</span>
           </label>
           <input
+            required
             type="date"
             name="end-date"
             id="end-date"
@@ -224,6 +239,7 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
             Upload Image<span className="text-red-500">*</span>
           </label>
           <input
+            required
             type="file"
             id="upload"
             className="hidden"
@@ -252,12 +268,12 @@ const minEndDate = startDate ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 *
         <br />
         <div>
           <input
+            required
             type="submit"
             className="mt-2 appearance-none block w-full px-3 h-[35px] border hover:text-white font-[600] text-purple-600 rounded-[3px] focus:outline-none focus:ring-purple-600 hover:bg-purple-600 border-purple-600 sm:text-sm cursor-pointer"
             value="Create"
           />
         </div>
-
       </form>
     </div>
   );

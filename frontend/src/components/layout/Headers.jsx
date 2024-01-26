@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { categoriesData, productData } from "../../static/data";
+import { categoriesData } from "../../static/data";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -20,6 +20,7 @@ import { RxCross1 } from "react-icons/rx";
 
 const Headers = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const {allProducts} = useSelector((state) => state.product);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -33,8 +34,8 @@ const Headers = ({ activeHeading }) => {
     setSearchTerm(term);
 
     const filteredProducts =
-      productData &&
-      productData.filter((product) =>
+    allProducts &&
+    allProducts.filter((product) =>
         product.name.toLowerCase().includes(term.toLowerCase())
       );
     setSearchData(filteredProducts);
@@ -81,7 +82,7 @@ const Headers = ({ activeHeading }) => {
               <div
                 className={`${
                   searchTerm.length === 0 ? "hidden" : ""
-                } absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4`}
+                } absolute min-h-[30vh] w-full bg-slate-50 shadow-sm-2 z-[9] p-4`}
               >
                 {searchData &&
                   searchData.map((i, index) => {
@@ -89,12 +90,12 @@ const Headers = ({ activeHeading }) => {
 
                     const Product_name = d.replace(/\s+/g, "-");
                     return (
-                      <Link to={`/product/${Product_name}`}>
-                        <div className="w-full flex items-start-py-3">
+                      <Link to={`/product/${Product_name}`} className="w-full ">
+                        <div className="w-full flex items-start-py-3 hover:bg-slate-200" key={i.name}>
                           <img
-                            src={i.image_Url[0].url}
+                            src={`${backend_url}/${i.images[0]}`}
                             alt=""
-                            className="w-[40px] h-[40px] mr-[10px]"
+                            className="w-[45px] h-[45px] mr-[10px]"
                           />
                           <h1>{i.name}</h1>
                         </div>
@@ -106,7 +107,7 @@ const Headers = ({ activeHeading }) => {
               <div
                 className={`${
                   searchTerm.length === 0 ? "hidden" : ""
-                } absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4`}
+                } absolute min-h-[30vh] w-full bg-slate-50 shadow-sm-2 z-[9] p-4`}
               >
                 No Product Found!
               </div>

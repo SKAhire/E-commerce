@@ -7,6 +7,7 @@ import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
+import { backend_url } from "../../../server";
 
 function ProductDetailsCard({ setOpen, data }) {
   const [count, setCount] = useState(1);
@@ -36,17 +37,17 @@ function ProductDetailsCard({ setOpen, data }) {
             />
             <div className="block w-full 800px:flex">
               <div className="w-full 800px:w-[50%]">
-                <img src={data.image_Url[0].url} alt={data.name} />
+                <img src={`${backend_url}/${data.images && data.images[0]}`} alt={data.name} />
                 <div className="flex">
                   <img
-                    src={data.shop.shop_avatar.url}
+                    src={`${backend_url}/${data?.shop?.avatar}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full mr-2"
                   />
                   <div>
                     <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
                     <h5 className="pb-3 text-[15px]">
-                      ({data.shop.ratings}) Ratings
+                    (4.5) Ratings
                     </h5>
                   </div>
                 </div>
@@ -59,7 +60,7 @@ function ProductDetailsCard({ setOpen, data }) {
                   </span>
                 </div>
                 <h5 className="mt-5 text-[16px] text-[red]">
-                  ({data.total_sell}) Sold Out
+                (50) Sold out
                 </h5>
               </div>
               <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
@@ -69,10 +70,10 @@ function ProductDetailsCard({ setOpen, data }) {
                 <p>{data.description}</p>
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
-                    {data.discount_price}$
+                  {data.discountPrice}$
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.price ? data.price + "$" : null}
+                    {data.originalPrice  ? data.originalPrice + "$" : null}
                   </h3>
                 </div>
 

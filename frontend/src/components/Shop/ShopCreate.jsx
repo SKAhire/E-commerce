@@ -11,6 +11,7 @@ const ShopCreate = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [description, setDescription] = useState("");
   const [password, setPassword] = useState({ pass: "", cpass: "" });
   const [phoneNumber, setPhoneNumber] = useState();
   const [address, setAddress] = useState("");
@@ -34,6 +35,7 @@ const ShopCreate = () => {
     newForm.append("password", password);
     newForm.append("address", address);
     newForm.append("phoneNumber", phoneNumber);
+    newForm.append("description", description);
     newForm.append("zip", zip);
 
     axios
@@ -161,6 +163,26 @@ const ShopCreate = () => {
                   }}
                   className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:ring-purple-500 focus:outline-none focus:border-purple-500 sm:text-sm"
                 />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="phoneNumber"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Phone No.
+              </label>
+              <div className="mt-1">
+                <textarea
+                  cols={30}
+                  rows={8}
+                  name="description"
+                  className="mt-2 appearance-none block w-full py-2 px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-purple-600 focus:border-purple-600 sm:text-sm"
+                  placeholder="Enter your product description..."
+                  onChange={(e) => setDescription(e.target.value)}
+                >
+                  {description}
+                </textarea>
               </div>
             </div>
             <div>

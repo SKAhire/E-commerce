@@ -21,17 +21,30 @@ export const productReducer = createReducer(initialState, {
     },
 
     // get product
-    getAllProductsRequest:(state) => {
+    getAllProductsShopRequest:(state) => {
         state.isLoading = true;
     },
-    getAllProductsSuccess:(state, action) => {
+    getAllProductsShopSuccess:(state, action) => {
         state.isLoading = false;
         state.product = action.payload;
     },
-    getAllProductsFail:(state, action) => {
+    getAllProductsShopFail:(state, action) => {
         state.isLoading = false;
         state.error = action.payload;
     },
+
+    // get all products
+  getAllProductsRequest: (state) => {
+    state.isLoading = true;
+  },
+  getAllProductsSuccess: (state, action) => {
+    state.isLoading = false;
+    state.allProducts = action.payload;
+  },
+  getAllProductsFail: (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
+  },
 
     // delete product
     deleteProductsRequest:(state) => {

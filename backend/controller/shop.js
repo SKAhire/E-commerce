@@ -161,6 +161,21 @@ router.get("/get-shop", isShopAuthenticated, catchAsyncError(async(req, res, nex
         return next(new ErrorHandler(error.message, 500));
     }
 }))
+router.get("/get-shop-info/:id", catchAsyncError(async(req, res, next)=> {
+    try {
+        const shop = await Shop.findById(req.params.id)
+        if(!shop){
+            return next(new ErrorHandler("Shop doesn't exist!", 400))
+        }
+
+        res.status(200).json({
+            success: true,
+            shop,
+        });
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
 
 // logout from shop
 router.get("/logout-shop", isShopAuthenticated, catchAsyncError(async(req, res, next) => {
