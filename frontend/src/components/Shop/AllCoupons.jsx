@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteShopCoupon,
-} from "../../redux/actions/coupons";
 import { Button } from "@material-ui/core";
 import { AiOutlineDelete } from "react-icons/ai";
 import Loader from "../layout/Loader";
@@ -75,7 +72,7 @@ const AllCoupons = () => {
       .catch((error) => {
         setIsLoading(false);
       });
-  }, [dispatch]);
+  }, [dispatch, shop._id]);
 
   const columns = [
     { field: "id", headerName: "Coupon Id", minWidth: 150, flex: 0.7 },
@@ -154,7 +151,7 @@ const AllCoupons = () => {
                   <h5 className="text-center text-[30px] font-Poppins">
                     Create Coupon Code
                   </h5>
-                  <form onSubmit={handleSubmit} aria-required={true}>
+                  <form onSubmit={handleSubmit} >
                     <br />
                     <div>
                       <label className="pb-2">

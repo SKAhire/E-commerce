@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { productData } from "../../static/data";
 import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
 import { useSelector } from "react-redux";
@@ -11,8 +10,8 @@ const SuggestedProduct = ({ data }) => {
     const d =
       allProducts && allProducts.filter((i) => i.category === data.category);
     setProductData(d);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  }, [allProducts, data.category]);
 
   return (
     <div>

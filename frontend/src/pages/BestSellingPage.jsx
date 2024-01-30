@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/styles";
 import Headers from "../components/layout/Headers";
 import ProductCard from "../components/Route/ProductCard/ProductCard";
-import { productData } from "../static/data";
 import Footer from "../components/layout/Footer";
 import { useSelector } from "react-redux";
 import Loader from "../components/layout/Loader";
@@ -16,7 +15,7 @@ const BestSellingPage = () => {
     const d = allProducts;
     setData(d);
     // window.scrollTo(0, 0)
-  }, []);
+  }, [allProducts]);
   return (
     <>
       {isLoading ? (

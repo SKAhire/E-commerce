@@ -20,7 +20,10 @@ import { RxCross1 } from "react-icons/rx";
 
 const Headers = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  const {allProducts} = useSelector((state) => state.product);
+  const { isShopAuthenticated } = useSelector((state) => state.shop);
+  const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { allProducts } = useSelector((state) => state.product);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -34,8 +37,8 @@ const Headers = ({ activeHeading }) => {
     setSearchTerm(term);
 
     const filteredProducts =
-    allProducts &&
-    allProducts.filter((product) =>
+      allProducts &&
+      allProducts.filter((product) =>
         product.name.toLowerCase().includes(term.toLowerCase())
       );
     setSearchData(filteredProducts);
@@ -91,7 +94,10 @@ const Headers = ({ activeHeading }) => {
                     const Product_name = d.replace(/\s+/g, "-");
                     return (
                       <Link to={`/product/${Product_name}`} className="w-full ">
-                        <div className="w-full flex items-start-py-3 hover:bg-slate-200" key={i.name}>
+                        <div
+                          className="w-full flex items-start-py-3 hover:bg-slate-200"
+                          key={i.name}
+                        >
                           <img
                             src={`${backend_url}/${i.images[0]}`}
                             alt=""
@@ -114,11 +120,19 @@ const Headers = ({ activeHeading }) => {
             )}
           </div>
           <div className={`${styles.button} `} style={{ margin: 0 }}>
-            <Link to="/shop-create">
-              <h1 className="text-white flex items-center">
-                Become Seller <IoIosArrowForward className="ml-1" />
-              </h1>
-            </Link>
+            {isShopAuthenticated ? (
+              <Link to="/dashboard">
+                <h1 className="text-white flex items-center">
+                  Dashboard <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+            ) : (
+              <Link to="/shop-create">
+                <h1 className="text-white flex items-center">
+                  Become Seller <IoIosArrowForward className="ml-1" />
+                </h1>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -161,7 +175,7 @@ const Headers = ({ activeHeading }) => {
               >
                 <AiOutlineHeart size={30} color="rgb(255 255 255/83%)" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#4a3b85] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  0
+                  {wishlist && wishlist.length}
                 </span>
               </div>
             </div>
@@ -172,7 +186,7 @@ const Headers = ({ activeHeading }) => {
               >
                 <AiOutlineShoppingCart size={30} color="rgb(255 255 255/83%)" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#4a3b85] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  0
+                 {cart && cart.length}
                 </span>
               </div>
             </div>
@@ -232,7 +246,7 @@ const Headers = ({ activeHeading }) => {
             <div className="relative mr-[20px]">
               <AiOutlineShoppingCart size={35} />
               <span className="absolute right-0 top-0 rounded-full bg-[#4a3b85] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                0
+              {cart && cart.length}
               </span>
             </div>
           </div>

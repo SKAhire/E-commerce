@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { productData } from "../../static/data";
 import ProductCard from "../Route/ProductCard/ProductCard";
 import styles from "../../styles/styles";
 import { Link, useParams } from "react-router-dom";
@@ -13,7 +12,7 @@ const ShopProfileDetails = ({ isOwner }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllProductsShop(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <div className="w-full">

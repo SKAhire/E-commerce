@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { server } from "../server";
+import styles from "../styles/styles";
 
 function ActivationPage() {
   const { activation_token } = useParams();
@@ -32,12 +33,27 @@ function ActivationPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
       }}
     >
       {error ? (
-        <p>Your token is expired!</p>
+        <>
+          <p>Your token is expired!</p>
+          <Link to={"/"}>
+            <div className={`${styles.button}`}>
+              <span className="text-white">Go Back</span>
+            </div>
+          </Link>
+        </>
       ) : (
-        <p>Your account has been created suceessfully!</p>
+        <>
+          <p>Your account has been created suceessfully!</p>
+          <Link to={"/login"}>
+            <div className={`${styles.button}`}>
+              <span className="text-white">Login</span>
+            </div>
+          </Link>
+        </>
       )}
     </div>
   );
