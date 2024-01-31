@@ -89,11 +89,10 @@ const Headers = ({ activeHeading }) => {
               >
                 {searchData &&
                   searchData.map((i, index) => {
-                    const d = i.name;
-
-                    const Product_name = d.replace(/\s+/g, "-");
+                    // const d = i.name;
+                    // const Product_name = d.replace(/\s+/g, "-");
                     return (
-                      <Link to={`/product/${Product_name}`} className="w-full ">
+                      <Link to={`/product/${i._id}`} className="w-full ">
                         <div
                           className="w-full flex items-start-py-3 hover:bg-slate-200"
                           key={i.name}
@@ -287,11 +286,10 @@ const Headers = ({ activeHeading }) => {
                   >
                     {searchData &&
                       searchData.map((i, index) => {
-                        const d = i.name;
-
-                        const Product_name = d.replace(/\s+/g, "-");
+                        // const d = i.name;
+                        // const Product_name = d.replace(/\s+/g, "-");
                         return (
-                          <Link to={`/product/${Product_name}`}>
+                          <Link to={`/product/${i._id}`}>
                             <div className="w-full flex items-start-py-3">
                               <img
                                 src={i.image_Url[0].url}

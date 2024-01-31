@@ -102,8 +102,8 @@ const Cart = ({ setOpenCart }) => {
 const CardSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
   const [value, setVaule] = useState(data.qty);
   const totalPrice = data.discountPrice * value;
-  const d = data.name;
-  const product_name = d.replace(/\s+/g, "-");
+  // const d = data.name;
+  // const product_name = d.replace(/\s+/g, "-");
 
   const increment = (data) => {
     if (data.stock < data.qty) {
@@ -145,7 +145,7 @@ const CardSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
           className="w-[70px] h-[70px] m-2"
         />
 
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${data?._id}`}>
           <div className="pl-[5px]">
             <h1 className="font-[600]">{data.name}</h1>
             <h4 className="font-[400] text-[15px] text-[#00000082]">

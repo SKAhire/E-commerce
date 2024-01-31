@@ -67,8 +67,8 @@ const Wishlist = ({ setOpenWishlist }) => {
 
 const CardSingle = ({ data, removeFromWishlistHandler }) => {
   const { cart } = useSelector((state) => state.cart);
-  const d = data.name;
-  const product_name = d.replace(/\s+/g, "-");
+  // const d = data.name;
+  // const product_name = d.replace(/\s+/g, "-");
   const dispatch = useDispatch();
 
   const addToCartHandler = (id) => {
@@ -98,7 +98,7 @@ const CardSingle = ({ data, removeFromWishlistHandler }) => {
           className="w-[70px] h-[70px] m-2"
         />
 
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${data._id}`}>
           <div className="pl-[5px]">
             <h1 className="font-[600]">{data.name}</h1>
             <h4 className="font-[600] text-[17px] pt-[3px] text-red-600 font-Roboto">

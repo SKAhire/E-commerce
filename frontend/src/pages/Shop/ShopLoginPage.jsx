@@ -11,7 +11,7 @@ const ShopLoginPage = () => {
     if(isShopAuthenticated === true) {
       navigate(`/dashboard`);
     }
-  }, [isLoading, isShopAuthenticated])
+  }, [isLoading, isShopAuthenticated, navigate])
   return (
     <div>
       <ShopLogin/>

@@ -20,7 +20,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     dispatch(getAllProductsShop(shop._id));
-  }, [dispatch]);
+  }, [dispatch, shop._id]);
 
   const columns = [
     { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
@@ -54,11 +54,11 @@ const AllProducts = () => {
       flex: 0.8,
       sortable: false,
       renderCell: (params) => {
-        const d = params.row.name;
-        const product_name = d.replace(/\s+/g, "-");
+        const d = params.row.id;
+        // const product_name = d.replace(/\s+/g, "-");
         return (
             <>
-                <Link to={`/product/${product_name}`}>
+                <Link to={`/product/${d}`}>
                     <Button>
                         <AiOutlineEye size={20} />
                     </Button>

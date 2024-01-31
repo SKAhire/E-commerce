@@ -30,7 +30,7 @@ useEffect(() => {
     toast.success("Product created successfully!")
     window.location.reload(true);
   }
-}, [dispatch, error, success])
+}, [dispatch, error, success, navigate])
 
 
 

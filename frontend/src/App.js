@@ -65,8 +65,8 @@ function App() {
           <Route exact path='/sign-up' element={<SignupPage />} />
           <Route exact path='/best-selling' element={<BestSellingPage />} />
           <Route exact path='/products' element={<ProductsPage />} />
-          <Route exact path='/product/:name' element={<ProductDetailsPage />} />
-          <Route exact path='/order/success/:name' element={<OrderSuccessPage />} />
+          <Route exact path='/product/:id' element={<ProductDetailsPage />} />
+          <Route exact path='/order/success/:id' element={<OrderSuccessPage />} />
           <Route exact path='/events' element={<EventsPage />} />
           <Route exact path='/FAQ' element={<FAQPage />} />
           

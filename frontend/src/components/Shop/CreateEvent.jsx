@@ -32,7 +32,7 @@ const CreateEvent = () => {
       toast.success("Event created successfully!");
       window.location.reload(true);
     }
-  }, [dispatch, error, success]);
+  }, [dispatch, error, success, navigate]);
 
   // handle start date for event
   const handleStartDateChange = (e) => {

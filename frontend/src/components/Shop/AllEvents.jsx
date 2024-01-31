@@ -20,7 +20,7 @@ const AllEvents = () => {
 
   useEffect(() => {
     dispatch(getAllEventsShop(shop._id));
-  }, [dispatch]);
+  }, [dispatch, shop._id]);
 
   const columns = [
     { field: "id", headerName: "Event Id", minWidth: 150, flex: 0.7 },
