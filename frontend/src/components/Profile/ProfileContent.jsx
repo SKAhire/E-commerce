@@ -13,9 +13,8 @@ const ProfileContent = ({ active }) => {
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
   const [phoneNumber, setPhoneNumber] = useState();
-  const [zipNumber, setZipNumber] = useState();
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
+  const [password, setPassword] = useState("");
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,6 +50,7 @@ const ProfileContent = ({ active }) => {
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Full Name:</label>
                   <input
+                  placeholder="Enter your full name"
                     type="text"
                     autoComplete="on"
                     required
@@ -62,6 +62,7 @@ const ProfileContent = ({ active }) => {
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Email:</label>
                   <input
+                  placeholder="Enter your email address"
                     type="email"
                     autoComplete="on"
                     className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
@@ -77,6 +78,7 @@ const ProfileContent = ({ active }) => {
                   <input
                     type="number"
                     autoComplete="on"
+                    placeholder="Enter your 10-digits phone number"
                     className={`${styles.input} p-2 !w-[95%] mb-4 800px:mb-0`}
                     value={phoneNumber}
                     maxLength={10}
@@ -85,40 +87,14 @@ const ProfileContent = ({ active }) => {
                   />
                 </div>
                 <div className="w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Zip:</label>
+                  <label className="block pb-2">Password:</label>
                   <input
-                    type="number"
-                    autoComplete="on"
-                    maxLength={6}
+                    type="password"
+                    autoComplete="off"
                     className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
-                    value={zipNumber}
-                    onChange={(e) => setZipNumber(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="w-full 800px:flex pb-3">
-                <div className="w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Address 1:</label>
-                  <input
-                    type="address"
-                    autoComplete="on"
-                    className={`${styles.input} p-2 !w-[95%] mb-4 800px:mb-0`}
-                    value={address1}
-                    maxLength={10}
-                    onChange={(e) => setAddress1(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="w-[100%] 800px:w-[50%]">
-                  <label className="block pb-2">Address 2:</label>
-                  <input
-                    type="address"
-                    autoComplete="on"
-                    maxLength={6}
-                    className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
-                    value={address2}
-                    onChange={(e) => setAddress2(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password!"
                     required
                   />
                 </div>

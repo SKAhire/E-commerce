@@ -12,7 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/actions/cart";
-import { addToWishlist, removeFromWishlist } from "../../redux/actions/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
 
 const ProductDetails = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
@@ -92,6 +95,7 @@ const ProductDetails = ({ data }) => {
                         className={`${
                           select === 0 ? "border" : "null"
                         } cursor-pointer`}
+                        key={index}
                       >
                         <img
                           src={`${backend_url}/${i}`}
@@ -168,19 +172,23 @@ const ProductDetails = ({ data }) => {
                   </span>
                 </div>
                 <div className="flex items-center pt-8">
-                  <img
-                    src={`${backend_url}/${data?.shop?.avatar}`}
-                    className="w-[50px] h-[50px] rounded-full mr-2"
-                    alt=""
-                  />
-                  <div className="pr-8">
-                    <h3 className={`${styles.shop_name} pb-1 pt-1`}>
-                      {data.shop.name}
-                    </h3>
-                    <h5 className="pb-3 text-[15px]">
-                      ({data.shop.ratings}) Rating
-                    </h5>
-                  </div>
+                  <Link to={`/shop/preview/${data.shop._id}`}>
+                    <div className="flex items-center">
+                      <img
+                        src={`${backend_url}/${data?.shop?.avatar}`}
+                        className="w-[50px] h-[50px] rounded-full mr-2"
+                        alt=""
+                      />
+                      <div className="pr-8">
+                        <h3 className={`${styles.shop_name} pb-1 pt-1`}>
+                          {data.shop.name}
+                        </h3>
+                        <h5 className="pb-3 text-[15px]">
+                          ({data.shop.ratings}) Rating
+                        </h5>
+                      </div>
+                    </div>
+                  </Link>
                   <div
                     className={`${styles.button} bg-purple-600 mt-4 rounded h-11`}
                     onClick={handleMessageSubmit}
@@ -257,7 +265,6 @@ const ProductDetailsInfo = ({ data, product }) => {
       {active === 3 && (
         <div className="w-full block 800px:flex p-5">
           <div className="w-full 800px:w-[50%]">
-            <Link to={`/shop/preview/${data.shop._id}`}>
               <div className="flex items-center">
                 <img
                   src={`${backend_url}/${data?.shop?.avatar}`}
@@ -271,7 +278,6 @@ const ProductDetailsInfo = ({ data, product }) => {
                   <h5 className="pb-2 text-[15px]">(4/5) Rating</h5>
                 </div>
               </div>
-            </Link>
             <p className="pt-2">{data.shop.description}</p>
           </div>
           <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">

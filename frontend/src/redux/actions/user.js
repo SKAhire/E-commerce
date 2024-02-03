@@ -21,6 +21,10 @@ export const loadUser = () => async (dispatch) => {
     });
   }
 };
+
+// update user information
+
+
 // load shop
 export const loadShop = () => async (dispatch) => {
   try {

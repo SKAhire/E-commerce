@@ -5,6 +5,7 @@ const intialState = {
 };
 
 export const userReducer = createReducer(intialState, {
+// load user
   LoadUserRequest: (state) => {
     state.loading = true;
   },
@@ -18,6 +19,21 @@ export const userReducer = createReducer(intialState, {
     state.error = action.payload;
     state.isAuthenticated = false;
   },
+
+// edit user
+UpdateUserInfoRequest: (state) => {
+  state.loading= true;
+},
+UpdateUserInfoSucess: (state, action) => {
+  state.loading = false;
+  state.userEdit = action.payload;
+},
+UpdateUserInfoFail: (state, action) => {
+  state.loading = false;
+  state.error = action.payload;
+},
+
+
   clearErrors: (state) => {
     state.error = null;
   }
