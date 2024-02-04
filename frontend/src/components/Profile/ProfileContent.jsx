@@ -1,24 +1,51 @@
 import React, { useState } from "react";
-import { backend_url } from "../../server";
-import { useSelector } from "react-redux";
-import { AiOutlineArrowRight, AiOutlineCamera, AiOutlineDelete } from "react-icons/ai";
+import { backend_url, server } from "../../server";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  AiOutlineArrowRight,
+  AiOutlineCamera,
+  AiOutlineDelete,
+} from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
-import {Button} from "@material-ui/core"
-import {DataGrid} from "@material-ui/data-grid"
+import { Button } from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
 import { MdOutlineTrackChanges } from "react-icons/md";
+import { updateUserInfo } from "../../redux/actions/user";
+import axios from "axios";
+import {toast} from 'react-toastify'
 
 const ProfileContent = ({ active }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
-  const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
-
+  const [avatar, setAvatar] = useState(null);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // had an error because the parameter sequence was not matching in user->action
+    dispatch(updateUserInfo(email, password, phoneNumber, name));
   };
+  const handleAvatar = async (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+    const formData = new FormData();
+    formData.append("image", e.target.files[0])
+
+    await axios.put(`${server}/user/update-avatar`, formData, {
+      headers: {
+        "Content-Type" : "multipart/form-data"
+      },
+      withCredentials: true
+    }).then((response) => {
+      window.location.reload(true)
+    }).catch((error) => {
+      toast.error(error)
+    })
+  }
 
   return (
     <div className="w-full shadow-md bg-purple-100 rounded-md ">
@@ -34,11 +61,14 @@ const ProfileContent = ({ active }) => {
               /> */}
               <img
                 src={`${backend_url}/${user?.avatar}`}
-                alt=""
+                alt="profile image"
                 className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#4a3b85] mt-2"
               />
               <div className="flex items-center w-[30px] h-[30px] bg-[#e3e9ee] rounded-full justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
-                <AiOutlineCamera />
+                <input type="file" id="image" className="hidden" onChange={handleAvatar}/>
+                <label htmlFor="image">
+                  <AiOutlineCamera className="cursor-pointer" />
+                </label>
               </div>
             </div>
           </div>
@@ -50,7 +80,7 @@ const ProfileContent = ({ active }) => {
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Full Name:</label>
                   <input
-                  placeholder="Enter your full name"
+                    placeholder="Enter your full name"
                     type="text"
                     autoComplete="on"
                     required
@@ -62,7 +92,7 @@ const ProfileContent = ({ active }) => {
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Email:</label>
                   <input
-                  placeholder="Enter your email address"
+                    placeholder="Enter your email address"
                     type="email"
                     autoComplete="on"
                     className={`${styles.input} p-2 !w-[95%] mb-1 800px:mb-0`}
@@ -212,26 +242,27 @@ const AllOrders = () => {
 
   const row = [];
 
-  orders && orders.forEach((item) => {
-    row.push({
+  orders &&
+    orders.forEach((item) => {
+      row.push({
         id: item._id,
         itemsQty: item.orderItems.length,
         total: "US$ " + item.totalPrice,
         status: item.orderStatus,
-    })
-  });
+      });
+    });
 
   return (
-  <div className="pl-8 pt-1">
-    <DataGrid
-    className="bg-white"
-    rows={row}
-    columns={columns}
-    pageSize={10}
-    disableSelectionOnClick
-    autoHeight
-    />
-  </div>
+    <div className="pl-8 pt-1">
+      <DataGrid
+        className="bg-white"
+        rows={row}
+        columns={columns}
+        pageSize={10}
+        disableSelectionOnClick
+        autoHeight
+      />
+    </div>
   );
 };
 
@@ -302,30 +333,31 @@ const AllRefundOrders = () => {
 
   const row = [];
 
-  orders && orders.forEach((item) => {
-    row.push({
+  orders &&
+    orders.forEach((item) => {
+      row.push({
         id: item._id,
         itemsQty: item.orderItems.length,
         total: "US$ " + item.totalPrice,
         status: item.orderStatus,
-    })
-  });
+      });
+    });
 
   return (
-  <div className="pl-8 pt-1">
-    <DataGrid
-    className="bg-white"
-    rows={row}
-    columns={columns}
-    pageSize={10}
-    disableSelectionOnClick
-    autoHeight
-    />
-  </div>
+    <div className="pl-8 pt-1">
+      <DataGrid
+        className="bg-white"
+        rows={row}
+        columns={columns}
+        pageSize={10}
+        disableSelectionOnClick
+        autoHeight
+      />
+    </div>
   );
 };
 
-const TrackOrder = () => { 
+const TrackOrder = () => {
   const orders = [
     {
       _id: "13somerandomtextasid13",
@@ -420,9 +452,7 @@ const PaymentMethod = () => {
   return (
     <div className="w-full px-5">
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] py-2">
-          Payment Methods
-        </h1>
+        <h1 className="text-[25px] font-[600] py-2">Payment Methods</h1>
         <div className={`${styles.button} !rounded-md`}>
           <span className="text-white">Add New</span>
         </div>
@@ -430,7 +460,10 @@ const PaymentMethod = () => {
       <br />
       <div className="w-full bg-white rounded-[4px] h-[70px] flex items-center justify-between px-3 shadow pr-10">
         <div className="flex items-center">
-          <img src="https://bonik-react.vercel.app/assets/images/payment-methods/Visa.svg" alt="" />
+          <img
+            src="https://bonik-react.vercel.app/assets/images/payment-methods/Visa.svg"
+            alt=""
+          />
           <h5 className="pl-5 font-[600]">Guru</h5>
         </div>
         <div className="pl-8 flex items-center">
@@ -442,16 +475,14 @@ const PaymentMethod = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Address = () => {
   return (
     <div className="w-full px-5">
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] py-2">
-          Addresses
-        </h1>
+        <h1 className="text-[25px] font-[600] py-2">Addresses</h1>
         <div className={`${styles.button} !rounded-md`}>
           <span className="text-white">Add New</span>
         </div>
@@ -462,7 +493,10 @@ const Address = () => {
           <h5 className="pl-5 font-[600]">Default Address</h5>
         </div>
         <div className="pl-8 flex items-center">
-          <h6>Juhu Tara Rd, opposite JW Marriott, Juhu Tara, Juhu, Mumbai, Maharashtra 400049, India</h6>
+          <h6>
+            Juhu Tara Rd, opposite JW Marriott, Juhu Tara, Juhu, Mumbai,
+            Maharashtra 400049, India
+          </h6>
         </div>
         <div className="pl-8 flex items-center">
           <h6>9876543210</h6>
@@ -472,7 +506,7 @@ const Address = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ProfileContent;

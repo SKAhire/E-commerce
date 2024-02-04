@@ -26,7 +26,7 @@ UpdateUserInfoRequest: (state) => {
 },
 UpdateUserInfoSucess: (state, action) => {
   state.loading = false;
-  state.userEdit = action.payload;
+  state.user = action.payload;
 },
 UpdateUserInfoFail: (state, action) => {
   state.loading = false;
