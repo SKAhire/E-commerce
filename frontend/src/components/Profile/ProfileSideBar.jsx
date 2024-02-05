@@ -1,7 +1,8 @@
 import React from 'react';
-import { AiOutlineCreditCard, AiOutlineLogin, AiOutlineMessage } from 'react-icons/ai';
+import { AiOutlineLogin, AiOutlineMessage } from 'react-icons/ai';
 import { HiReceiptRefund, HiShoppingBag } from 'react-icons/hi';
 import { RxPerson } from 'react-icons/rx';
+import {RiLockPasswordLine} from "react-icons/ri";
 import { TbAddressBook } from 'react-icons/tb';
 import {
     MdOutlineTrackChanges,
@@ -56,9 +57,9 @@ const ProfileSideBar = ({active, setActive}) => {
         </span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8 hover:bg-purple-600 hover:text-white p-2 " onClick={() => setActive(6)}>
-        <AiOutlineCreditCard size={20} color={active === 6 ? "purple": ""} />
+        <RiLockPasswordLine size={20} color={active === 6 ? "purple": ""} />
         <span className={`pl-3 ${active === 6 ? "text-[purple]" : ""} font-[600] 800px:block hidden`}>
-            Payment Methods
+        Change Password
         </span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8 hover:bg-purple-600 hover:text-white p-2 " onClick={() => setActive(7)}>
