@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { backend_url, server } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,18 +11,35 @@ import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import { MdOutlineTrackChanges } from "react-icons/md";
-import { updateUserInfo } from "../../redux/actions/user";
+import {
+  deleteUserAddress,
+  updatUserAddress,
+  updateUserInfo,
+} from "../../redux/actions/user";
 import axios from "axios";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
+import { RxCross1 } from "react-icons/rx";
+import { Country, State } from "country-state-city";
 
 const ProfileContent = ({ active }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user, error, successMessage } = useSelector((state) => state.user);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: "clearErrors" });
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch({ type: "clearMessages" });
+    }
+  }, [error, successMessage, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,19 +50,21 @@ const ProfileContent = ({ active }) => {
     const file = e.target.files[0];
     setAvatar(file);
     const formData = new FormData();
-    formData.append("image", e.target.files[0])
-
-    await axios.put(`${server}/user/update-avatar`, formData, {
-      headers: {
-        "Content-Type" : "multipart/form-data"
-      },
-      withCredentials: true
-    }).then((response) => {
-      window.location.reload(true)
-    }).catch((error) => {
-      toast.error(error)
-    })
-  }
+    formData.append("image", e.target.files[0]);
+    await axios
+      .put(`${server}/user/update-avatar`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  };
 
   return (
     <div className="w-full shadow-md bg-purple-100 rounded-md ">
@@ -61,11 +80,16 @@ const ProfileContent = ({ active }) => {
               /> */}
               <img
                 src={`${backend_url}/${user?.avatar}`}
-                alt="profile image"
+                alt={avatar}
                 className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#4a3b85] mt-2"
               />
               <div className="flex items-center w-[30px] h-[30px] bg-[#e3e9ee] rounded-full justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
-                <input type="file" id="image" className="hidden" onChange={handleAvatar}/>
+                <input
+                  type="file"
+                  id="image"
+                  className="hidden"
+                  onChange={handleAvatar}
+                />
                 <label htmlFor="image">
                   <AiOutlineCamera className="cursor-pointer" />
                 </label>
@@ -479,32 +503,238 @@ const PaymentMethod = () => {
 };
 
 const Address = () => {
+  const { user } = useSelector((state) => state.user);
+
+  const [open, setOpen] = useState(false);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [addressType, setAddressType] = useState("");
+  const dispatch = useDispatch();
+
+  const addressTypeData = [
+    {
+      name: "Default",
+    },
+    {
+      name: "Home",
+    },
+    {
+      name: "Office",
+    },
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (addressType === "" || country === "" || city === "") {
+      toast.error("Please fill all the fields!");
+    } else {
+      dispatch(
+        updatUserAddress(
+          country,
+          city,
+          address1,
+          address2,
+          zipCode,
+          addressType
+        )
+      );
+      setOpen(false);
+      setCountry("");
+      setCity("");
+      setAddress1("");
+      setAddress2("");
+      setZipCode(null);
+      setAddressType("");
+    }
+  };
+
+  const handleDelete = (item) => {
+    const id = item._id;
+    dispatch(deleteUserAddress(id));
+  };
+
   return (
     <div className="w-full px-5">
+      {open && (
+        <div className="flex w-full h-screen bg-[#0000009a] top-0 left-0 fixed items-center justify-center">
+          <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-y-auto">
+            <div className="flex justify-end items-center p-3 w-full">
+              <RxCross1
+                size={25}
+                className="cursor-pointer"
+                onClick={() => setOpen(false)}
+              />
+            </div>
+            <h1 className="text-center text-[25px] font-Poppins">
+              Add New Address
+            </h1>
+            <div className="w-full">
+              <form aria-required onSubmit={handleSubmit} className="w-full">
+                <div className="w-full block p-4">
+                  <div className="w-full pb-2">
+                    <label className="block pb-2">Country</label>
+                    <select
+                      name=""
+                      id=""
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      className="w-[95%] border h-[40px] rounded-[5px]"
+                    >
+                      <option value="" className="block border pb-2">
+                        choose your country
+                      </option>
+                      {Country &&
+                        Country.getAllCountries().map((item) => (
+                          <option
+                            className="block pb-2"
+                            key={item.isoCode}
+                            value={item.isoCode}
+                          >
+                            {item.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
+                  <div className="w-full pb-2">
+                    <label className="block pb-2">State</label>
+                    <select
+                      name=""
+                      id=""
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className="w-[95%] border h-[40px] rounded-[5px]"
+                    >
+                      <option value="" className="block border pb-2">
+                        choose your state
+                      </option>
+                      {State &&
+                        State.getStatesOfCountry(country).map((item) => (
+                          <option
+                            className="block pb-2"
+                            key={item.isoCode}
+                            value={item.isoCode}
+                          >
+                            {item.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
+                  <div className="w-full pb-2">
+                    <label className="block pb-2">Address 1</label>
+                    <input
+                      type="address"
+                      className={`${styles.input}`}
+                      required
+                      value={address1}
+                      onChange={(e) => setAddress1(e.target.value)}
+                    />
+                  </div>
+                  <div className="w-full pb-2">
+                    <label className="block pb-2">Address 2</label>
+                    <input
+                      type="address"
+                      className={`${styles.input}`}
+                      required
+                      value={address2}
+                      onChange={(e) => setAddress2(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="w-full pb-2">
+                    <label className="block pb-2">Zip Code</label>
+                    <input
+                      type="number"
+                      className={`${styles.input}`}
+                      required
+                      value={zipCode}
+                      onChange={(e) => setZipCode(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="w-full pb-2">
+                    <label className="block pb-2">Address Type</label>
+                    <select
+                      name=""
+                      id=""
+                      value={addressType}
+                      onChange={(e) => setAddressType(e.target.value)}
+                      className="w-[95%] border h-[40px] rounded-[5px]"
+                    >
+                      <option value="" className="block border pb-2">
+                        Choose your Address Type
+                      </option>
+                      {addressTypeData &&
+                        addressTypeData.map((item) => (
+                          <option
+                            className="block pb-2"
+                            key={item.name}
+                            value={item.name}
+                          >
+                            {item.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
+                  <div className=" w-full pb-2">
+                    <input
+                      type="submit"
+                      className={`w-[100%] h-[40px] border font-[600] border-purple-600 text-center rounded-[3px] text-purple-600 mt-6 mb-2 cursor-pointer hover:bg-purple-600 hover:text-white`}
+                      required
+                      readOnly
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex w-full items-center justify-between">
         <h1 className="text-[25px] font-[600] py-2">Addresses</h1>
-        <div className={`${styles.button} !rounded-md`}>
+        <div
+          className={`${styles.button} !rounded-md`}
+          onClick={() => setOpen(true)}
+        >
           <span className="text-white">Add New</span>
         </div>
       </div>
       <br />
-      <div className="w-full bg-white rounded-[4px] h-[70px] flex items-center justify-between px-3 shadow pr-10">
-        <div className="flex items-center">
-          <h5 className="pl-5 font-[600]">Default Address</h5>
-        </div>
-        <div className="pl-8 flex items-center">
-          <h6>
-            Juhu Tara Rd, opposite JW Marriott, Juhu Tara, Juhu, Mumbai,
-            Maharashtra 400049, India
-          </h6>
-        </div>
-        <div className="pl-8 flex items-center">
-          <h6>9876543210</h6>
-        </div>
-        <div className="flex items-center pl-8 justify-between min-w-[10%]">
-          <AiOutlineDelete size={25} className="cursor-pointer text-[red]" />
-        </div>
-      </div>
+
+      {user &&
+        user.addresses.map((item, index) => (
+          <div className="w-full bg-white rounded-[4px] h-[70px] flex items-center justify-between px-3 shadow pr-10">
+            <div className="flex items-center">
+              <h5 className="pl-5 font-[600]">{item.addressType}</h5>
+            </div>
+            <div className="pl-8 flex items-center">
+              <h6>
+                {item.address1} {item.address2}
+              </h6>
+            </div>
+            <div className="pl-8 flex items-center">
+              <h6>{user && user.phoneNumber}</h6>
+            </div>
+            <div className="flex items-center pl-8 justify-between min-w-[10%]">
+              <AiOutlineDelete
+                size={25}
+                className="cursor-pointer text-[red]"
+                onClick={() => handleDelete(item)}
+              />
+            </div>
+          </div>
+        ))}
+      {user && user.addresses.length === 0 && (
+        <h5 className="text-center pt-8 text-[18px]">
+          You not have any saved address!
+        </h5>
+      )}
     </div>
   );
 };

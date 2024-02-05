@@ -24,7 +24,6 @@ router.post('/create-user', upload.single('file'), async (req, res, next) => {
             const filePath = `uploads/${filename}`;
             fs.unlink(filePath, (err) => {
                 if (err) {
-                    console.log(err)
                     return res.status(500).json({ message: "Error Deleting the File" })
                 }
             })
@@ -208,31 +207,98 @@ router.put("/update-user-info", isAuthenticated, catchAsyncError(async (req, res
 
 // updating user avatar
 router.put(
-  "/update-avatar",
-  isAuthenticated,
-  upload.single("image"),
-  catchAsyncError(async (req, res, next) => {
-    try {
-      const existsUser = await User.findById(req.user.id);
+    "/update-avatar",
+    isAuthenticated,
+    upload.single("image"),
+    catchAsyncError(async (req, res, next) => {
+        try {
+            const existsUser = await User.findById(req.user.id);
 
-      const existAvatarPath = `uploads/${existsUser.avatar}`;
+            const existAvatarPath = `uploads/${existsUser.avatar}`;
 
-      fs.unlinkSync(existAvatarPath);
+            fs.unlinkSync(existAvatarPath);
 
-      const fileUrl = path.join(req.file.filename);
+            const fileUrl = path.join(req.file.filename);
 
-      const user = await User.findByIdAndUpdate(req.user.id, {
-        avatar: fileUrl,
-      });
+            const user = await User.findByIdAndUpdate(req.user.id, {
+                avatar: fileUrl,
+            });
 
-      res.status(200).json({
-        success: true,
-        user,
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-  })
+            res.status(200).json({
+                success: true,
+                user,
+            });
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    })
+);
+
+// update user addresses
+router.put(
+    "/update-user-addresses",
+    isAuthenticated,
+    catchAsyncError(async (req, res, next) => {
+        try {
+            const user = await User.findById(req.user.id);
+
+            const sameTypeAddress = user.addresses.find(
+                (address) => address.addressType === req.body.addressType
+            );
+            if (sameTypeAddress) {
+                return next(
+                    new ErrorHandler(`${req.body.addressType} address already exists`)
+                );
+            }
+
+            const existsAddress = user.addresses.find(
+                (address) => address._id === req.body._id
+            );
+
+            if (existsAddress) {
+                Object.assign(existsAddress, req.body);
+            } else {
+                // add the new address to the array
+                user.addresses.push(req.body);
+            }
+
+            await user.save();
+
+            res.status(200).json({
+                success: true,
+                user,
+            });
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    })
+);
+
+// delete user address
+router.delete(
+    "/delete-user-address/:id",
+    isAuthenticated,
+    catchAsyncError(async (req, res, next) => {
+        try {
+            const userId = req.user._id;
+            const addressId = req.params.id;
+
+            // console.log(addressId);
+
+            await User.updateOne(
+                {
+                    _id: userId,
+                },
+                { $pull: { addresses: { _id: addressId } } }
+            );
+
+            const user = await User.findById(userId);
+
+            res.status(200).json({ success: true, user });
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    })
 );
 
 module.exports = router
