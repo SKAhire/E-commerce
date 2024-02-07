@@ -23,7 +23,7 @@ function ActivationPage() {
 
       activationEmail();
     }
-  }, []);
+  });
 
   return (
     <div

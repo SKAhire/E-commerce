@@ -194,4 +194,67 @@ router.get("/logout-shop", isShopAuthenticated, catchAsyncError(async(req, res, 
     }
 }))
 
+
+// update shop profile picture
+router.put(
+    "/update-shop-avatar",
+    isShopAuthenticated,
+    upload.single("image"),
+    catchAsyncError(async (req, res, next) => {
+      try {
+        const existsUser = await Shop.findById(req.shop._id);
+  
+        const existAvatarPath = `uploads/${existsUser.avatar}`;
+  
+        // fs.unlinkSync(existAvatarPath);
+  
+        const fileUrl = path.join(req.file.filename);
+  
+        const shop = await Shop.findByIdAndUpdate(req.shop._id, {
+          avatar: fileUrl,
+        });
+  
+        res.status(200).json({
+          success: true,
+          shop,
+        });
+      } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+      }
+    })
+  );
+  
+  // update seller info
+  router.put(
+    "/update-shop-info",
+    isShopAuthenticated,
+    catchAsyncError(async (req, res, next) => {
+      try {
+        const { name, description, address, phoneNumber, zipCode } = req.body;
+  
+        const shop = await Shop.findOne(req.shop._id);
+  
+        if (!shop) {
+          return next(new ErrorHandler("User not found", 400));
+        }
+  
+        shop.name = name;
+        shop.description = description;
+        shop.address = address;
+        shop.phoneNumber = phoneNumber;
+        shop.zipCode = zipCode;
+  
+        await shop.save();
+  
+        res.status(201).json({
+          success: true,
+          shop,
+        });
+      } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+      }
+    })
+  );
+  
+
 module.exports = router

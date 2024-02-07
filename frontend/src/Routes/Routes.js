@@ -8,6 +8,8 @@ import EventsPage from "../pages/EventsPage";
 import FAQPage from "../pages/FAQPage";
 import OrderSuccessPage from "../pages/OrderSuccessPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
+import OrderDetailsPage from "../pages/OrderDetailsPage";
+import TrackOrderPage from "../pages/TrackOrderPage";
 import ProfilePage from "../pages/ProfilePage";
 import CheckoutPage from "../pages/CheckoutPage";
 import PaymentPage from "../pages/PaymentPage";
@@ -23,6 +25,8 @@ export {
     EventsPage,
     FAQPage,
     ProductDetailsPage,
+    OrderDetailsPage,
+    TrackOrderPage,
     ProfilePage,
     CheckoutPage,
     PaymentPage,

@@ -24,28 +24,28 @@ const ShopSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    //   addresses: [
-    //     {
-    //       country: {
-    //         type: String,
-    //       },
-    //       city: {
-    //         type: String,
-    //       },
-    //       address1: {
-    //         type: String,
-    //       },
-    //       address2: {
-    //         type: String,
-    //       },
-    //       zipCode: {
-    //         type: Number,
-    //       },
-    //       addressType: {
-    //         type: String,
-    //       },
-    //     }
-    //   ],
+      addresses: [
+        {
+          country: {
+            type: String,
+          },
+          city: {
+            type: String,
+          },
+          address1: {
+            type: String,
+          },
+          address2: {
+            type: String,
+          },
+          zipCode: {
+            type: Number,
+          },
+          addressType: {
+            type: String,
+          },
+        }
+      ],
     role: {
         type: String,
         default: "seller",
@@ -54,7 +54,7 @@ const ShopSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    zip: {
+    zipCode: {
         type: Number,
         required: true
     },

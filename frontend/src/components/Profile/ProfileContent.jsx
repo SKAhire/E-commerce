@@ -10,7 +10,7 @@ import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
-import { MdOutlineTrackChanges } from "react-icons/md";
+import { MdTrackChanges } from "react-icons/md";
 import {
   deleteUserAddress,
   updatUserAddress,
@@ -20,6 +20,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { RxCross1 } from "react-icons/rx";
 import { Country, State } from "country-state-city";
+import { getAllOrdersOfUser } from "../../redux/actions/order";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -200,18 +201,13 @@ const ProfileContent = ({ active }) => {
 };
 
 const AllOrders = () => {
-  const orders = [
-    {
-      _id: "13somerandomtextasid13",
-      orderItems: [
-        {
-          name: "iPhone 16 max pro",
-        },
-      ],
-      totalPrice: 120,
-      orderStatus: "Processing",
-    },
-  ];
+  const { user } = useSelector((state) => state.user);
+  const { orders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, [dispatch, user._id]);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -270,9 +266,9 @@ const AllOrders = () => {
     orders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.orderStatus,
+        status: item.status,
       });
     });
 
@@ -291,18 +287,15 @@ const AllOrders = () => {
 };
 
 const AllRefundOrders = () => {
-  const orders = [
-    {
-      _id: "13somerandomtextasid13",
-      orderItems: [
-        {
-          name: "iPhone 16 max pro",
-        },
-      ],
-      totalPrice: 120,
-      orderStatus: "Processing",
-    },
-  ];
+  const { user } = useSelector((state) => state.user);
+  const { orders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, [dispatch, user._id]);
+
+  const eligibleOrders = orders && orders.filter((item) => item.status === "Processing refund");
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -357,13 +350,13 @@ const AllRefundOrders = () => {
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
+  eligibleOrders &&
+  eligibleOrders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.orderStatus,
+        status: item.status,
       });
     });
 
@@ -382,18 +375,13 @@ const AllRefundOrders = () => {
 };
 
 const TrackOrder = () => {
-  const orders = [
-    {
-      _id: "13somerandomtextasid13",
-      orderItems: [
-        {
-          name: "iPhone 16 max pro",
-        },
-      ],
-      totalPrice: 120,
-      orderStatus: "Processing",
-    },
-  ];
+  const { user } = useSelector((state) => state.user);
+  const { orders } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, [user._id, dispatch]);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -437,7 +425,7 @@ const TrackOrder = () => {
           <>
             <Link to={`/user/track/order/${params.id}`}>
               <Button>
-                <MdOutlineTrackChanges size={20} />
+                <MdTrackChanges size={20} />
               </Button>
             </Link>
           </>
@@ -452,7 +440,7 @@ const TrackOrder = () => {
     orders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
         status: item.status,
       });
@@ -498,54 +486,54 @@ const ChangePassword = () => {
   };
   return (
     <div className="w-full px-5">
-    <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
-      Change Password
-    </h1>
-    <div className="w-full">
-      <form
-        aria-required
-        onSubmit={passwordChangeHandler}
-        className="flex flex-col items-center"
-      >
-        <div className=" w-[100%] 800px:w-[50%] mt-5">
-          <label className="block pb-2">Enter your old password</label>
-          <input
-            type="password"
-            className={`${styles.input} !w-[95%] p-2 mb-4 800px:mb-0`}
-            required
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-        </div>
-        <div className=" w-[100%] 800px:w-[50%] mt-2">
-          <label className="block pb-2">Enter your new password</label>
-          <input
-            type="password"
-            className={`${styles.input} !w-[95%] p-2 mb-4 800px:mb-0`}
-            required
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </div>
-        <div className=" w-[100%] 800px:w-[50%] mt-2">
-          <label className="block pb-2">Confirm new password</label>
-          <input
-            type="password"
-            className={`${styles.input} !w-[95%] p-2 mb-4 800px:mb-0`}
-            required
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <input
-            className={`w-[95%] h-[40px] border font-[600] border-purple-600 text-center rounded-[3px] text-purple-600 mt-6 mb-2 cursor-pointer hover:bg-purple-600 hover:text-white`}
-            required
-            value="Update"
-            type="submit"
-          />
-        </div>
-      </form>
+      <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
+        Change Password
+      </h1>
+      <div className="w-full">
+        <form
+          // aria-required
+          onSubmit={passwordChangeHandler}
+          className="flex flex-col items-center"
+        >
+          <div className=" w-[100%] 800px:w-[50%] mt-5">
+            <label className="block pb-2">Enter your old password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] p-2 mb-4 800px:mb-0`}
+              required
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+          </div>
+          <div className=" w-[100%] 800px:w-[50%] mt-2">
+            <label className="block pb-2">Enter your new password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] p-2 mb-4 800px:mb-0`}
+              required
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div className=" w-[100%] 800px:w-[50%] mt-2">
+            <label className="block pb-2">Confirm new password</label>
+            <input
+              type="password"
+              className={`${styles.input} !w-[95%] p-2 mb-4 800px:mb-0`}
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <input
+              className={`w-[95%] h-[40px] border font-[600] border-purple-600 text-center rounded-[3px] text-purple-600 mt-6 mb-2 cursor-pointer hover:bg-purple-600 hover:text-white`}
+              required
+              value="Update"
+              type="submit"
+            />
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
   );
 };
 
@@ -620,7 +608,11 @@ const Address = () => {
               Add New Address
             </h1>
             <div className="w-full">
-              <form aria-required onSubmit={handleSubmit} className="w-full">
+              <form
+                // aria-required
+                onSubmit={handleSubmit}
+                className="w-full"
+              >
                 <div className="w-full block p-4">
                   <div className="w-full pb-2">
                     <label className="block pb-2">Country</label>
@@ -756,9 +748,12 @@ const Address = () => {
 
       {user &&
         user.addresses.map((item, index) => (
-          <div className="w-full bg-white rounded-[4px] h-[70px] flex items-center justify-between px-3 shadow pr-10" key={index}>
+          <div
+            className="w-full bg-white rounded-[4px] h-[70px] flex items-center justify-between px-3 shadow pr-10"
+            key={index}
+          >
             <div className="flex items-center">
-              <h5 className="pl-5 font-[600]">{index+1}.</h5>
+              <h5 className="pl-5 font-[600]">{index + 1}.</h5>
             </div>
             <div className="flex items-center">
               <h5 className="pl-5 font-[600]">{item.addressType}</h5>

@@ -1,6 +1,6 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, } from "./Routes/Routes.js";
-import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, } from './Routes/ShopRoutes.js'
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, OrderDetailsPage, TrackOrderPage, } from "./Routes/Routes.js";
+import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, ShopAllOrders, ShopOrderDetails, ShopAllRefunds, ShopSettingsPage, ShopWithDrawMoneyPage, } from './Routes/ShopRoutes.js'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -18,21 +18,25 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { getAllProducts } from "./redux/actions/product.js";
 import { getAllEvents } from "./redux/actions/event.js";
-
+import axios from "axios";
+import { server } from "./server.js";
 
 function App() {
 
   const [stripeApikey, setStripeApiKey] = useState("");
 
-
-
+  async function getStripeApikey() {
+    const { data } = await axios.get(`${server}/payment/stripeapikey`);
+    setStripeApiKey(data.stripeApikey);
+  }
   useEffect(() => {
+
 
     Store.dispatch(loadUser());
     Store.dispatch(loadShop());
     Store.dispatch(getAllProducts());
     Store.dispatch(getAllEvents());
-    setStripeApiKey("somerandomtext")
+    getStripeApikey()
 
     // axios.get(`${server}/user/get-user`,{ withCredentials: true }).then((res) => {
     //   console.log(res.data)
@@ -66,10 +70,26 @@ function App() {
           <Route exact path='/best-selling' element={<BestSellingPage />} />
           <Route exact path='/products' element={<ProductsPage />} />
           <Route exact path='/product/:id' element={<ProductDetailsPage />} />
-          <Route exact path='/order/success/:id' element={<OrderSuccessPage />} />
+          <Route
+          path="/user/order/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/user/track/order/:id"
+          element={
+            <ProtectedRoute>
+              <TrackOrderPage />
+            </ProtectedRoute>
+          }
+        />
+          <Route exact path='/order/success' element={<OrderSuccessPage />} />
           <Route exact path='/events' element={<EventsPage />} />
           <Route exact path='/FAQ' element={<FAQPage />} />
-          
+
           <Route
             path="/checkout"
             element={
@@ -91,6 +111,14 @@ function App() {
           <Route exact path='/shop-create' element={<ShopCreatePage />} />
           <Route exact path='/shop-login' element={<ShopLoginPage />} />
           <Route exact path='/shop/preview/:id' element={<ShopPreviewPage />} />
+          <Route
+          path="/settings"
+          element={
+            <ShopProtectedRoute>
+              <ShopSettingsPage />
+            </ShopProtectedRoute>
+          }
+        />
           <Route exact path='/shop/:id' element={
             <ShopProtectedRoute>
               <ShopHomePage />
@@ -124,6 +152,26 @@ function App() {
           <Route exact path='/dashboard-coupons' element={
             <ShopProtectedRoute>
               <ShopAllCoupons />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-orders' element={
+            <ShopProtectedRoute>
+              <ShopAllOrders />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/order/:id' element={
+            <ShopProtectedRoute>
+              <ShopOrderDetails />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-refunds' element={
+            <ShopProtectedRoute>
+              <ShopAllRefunds />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-withdraw-money' element={
+            <ShopProtectedRoute>
+              <ShopWithDrawMoneyPage />
             </ShopProtectedRoute>
           } />
 

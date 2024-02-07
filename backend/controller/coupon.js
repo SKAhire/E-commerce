@@ -60,6 +60,23 @@ router.delete("/delete-coupon/:id", isShopAuthenticated, catchAsyncError(async (
     } catch (error) {
         return next(new ErrorHandler(error, 400))
     }
-}))
+}));
+
+// get coupon code value by its name
+router.get(
+    "/get-coupon-value/:name",
+    catchAsyncError(async (req, res, next) => {
+      try {
+        const couponCode = await Coupon.findOne({ name: req.params.name });
+  
+        res.status(200).json({
+          success: true,
+          couponCode,
+        });
+      } catch (error) {
+        return next(new ErrorHandler(error, 400));
+      }
+    })
+  );
 
 module.exports = router;

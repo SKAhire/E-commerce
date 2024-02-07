@@ -3,20 +3,26 @@ import Headers from "../components/layout/Headers";
 import Footer from "../components/layout/Footer";
 import ProductDetails from "../components/Products/ProductDetails"
 import SuggestedProduct from "../components/Products/SuggestedProduct"
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const ProductDetailsPage = () => {
-  const {allProducts} = useSelector((state) => state.product);
-    const {id} = useParams();
-    const [data, setData] = useState(null);
-    // const productName = name.replace(/-/g, " ");
+  const { allProducts } = useSelector((state) => state.product);
+  const { allEvents } = useSelector((state) => state.event);
+  const { id } = useParams();
+  const [data, setData] = useState(null);
+  const [searchParams] = useSearchParams();
+  const eventData = searchParams.get("isEvent");
 
-    useEffect(() => {
+  useEffect(() => {
+    if (eventData !== null) {
+      const data = allEvents && allEvents.find((i) => i._id === id);
+      setData(data);
+    } else {
       const data = allProducts && allProducts.find((i) => i._id === id);
       setData(data);
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }
+  }, [allProducts, allEvents, eventData, id]);
     
 
   return (
@@ -24,7 +30,11 @@ const ProductDetailsPage = () => {
         <Headers />
         <ProductDetails data={data} />
         {
-          data && <SuggestedProduct data={data}/>
+          !eventData && (
+            <>
+            {data && <SuggestedProduct data={data} />}
+            </>
+          )
         }
         <Footer/>
     </div>

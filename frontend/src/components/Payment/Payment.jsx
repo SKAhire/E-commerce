@@ -34,7 +34,7 @@ const Payment = () => {
       .create({
         purchase_units: [
           {
-            description: "Sunflower",
+            description: "Order description",
             amount: {
               currency_code: "USD",
               value: orderData?.totalPrice,
@@ -359,7 +359,7 @@ const PaymentInfo = ({
                     <PayPalScriptProvider
                       options={{
                         "client-id":
-                          "Aczac4Ry9_QA1t4c7TKH9UusH3RTe6onyICPoCToHG10kjlNdI-qwobbW9JAHzaRQwFMn2-k660853jn",
+                          "Aadvt9TgVMrmtZGnmqNrVoGb68pw_ksLF5TUG65GnXNI0FJo67oRCRJZTqqgL-1YgFPoRQFoHnoVBcF_",
                       }}
                     >
                       <PayPalButtons

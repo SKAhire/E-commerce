@@ -81,7 +81,10 @@ const Checkout = () => {
             (acc, item) => acc + item.qty * item.discountPrice,
             0
           );
-          const discountPrice = (eligiblePrice * couponCodeValue) / 100;
+          let discountPrice = (eligiblePrice * couponCodeValue) / 100;
+          if(discountPrice > res.data.couponCode?.maxAmount){
+            discountPrice = res.data.couponCode?.maxAmount
+          }
           setDiscountPrice(discountPrice);
           setCouponCodeData(res.data.couponCode);
           setCouponCode("");
@@ -281,7 +284,7 @@ const ShippingInfo = ({
         <div>
           {user &&
             user.addresses.map((item, index) => (
-              <div className="w-full flex mt-1">
+              <div className="w-full flex mt-1" key={index}>
                 <input
                   type="checkbox"
                   className="mr-3"

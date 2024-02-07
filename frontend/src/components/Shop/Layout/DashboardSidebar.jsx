@@ -164,7 +164,7 @@ const DashboardSidebar = ({ active, setActive }) => {
         </Link>
       </div>
       <div className="w-full flex items-center 800px:p-2 p-4">
-        <Link to="/dashboard-settings" className="w-full flex items-center 800px:hover:bg-gray-200 800px:p-2">
+        <Link to="/settings" className="w-full flex items-center 800px:hover:bg-gray-200 800px:p-2">
           <CiSettings
             size={30}
             className={`${active === 11 ? "text-purple-600" : "text-[#555]"}`}
