@@ -1,6 +1,6 @@
 
-import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, OrderDetailsPage, TrackOrderPage, } from "./Routes/Routes.js";
-import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, ShopAllOrders, ShopOrderDetails, ShopAllRefunds, ShopSettingsPage, ShopWithDrawMoneyPage, } from './Routes/ShopRoutes.js'
+import { LoginPage, SignupPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FAQPage, OrderSuccessPage, ProductDetailsPage, ProfilePage, CheckoutPage, PaymentPage, OrderDetailsPage, TrackOrderPage, UserInboxPage, } from "./Routes/Routes.js";
+import { ShopCreatePage, ShopActivationPage, ShopLoginPage, ShopHomePage, ShopDashboardPage, ShopCreateProductPage, ShopAllPRoducts, ShopCreateEvent, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, ShopAllOrders, ShopOrderDetails, ShopAllRefunds, ShopSettingsPage, ShopWithDrawMoneyPage, ShopInboxPage, } from './Routes/ShopRoutes.js'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -104,6 +104,11 @@ function App() {
               <ProfilePage />
             </ProtectedRoute>
           } />
+          <Route exact path='/inbox' element={
+            <ProtectedRoute>
+              <UserInboxPage />
+            </ProtectedRoute>
+          } />
           <Route exact path='/activation/:activation_token' element={<ActivationPage />} />
 
           {/* shop routes */}
@@ -172,6 +177,11 @@ function App() {
           <Route exact path='/dashboard-withdraw-money' element={
             <ShopProtectedRoute>
               <ShopWithDrawMoneyPage />
+            </ShopProtectedRoute>
+          } />
+          <Route exact path='/dashboard-messages' element={
+            <ShopProtectedRoute>
+              <ShopInboxPage />
             </ShopProtectedRoute>
           } />
 

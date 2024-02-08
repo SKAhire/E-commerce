@@ -13,6 +13,7 @@ import TrackOrderPage from "../pages/TrackOrderPage";
 import ProfilePage from "../pages/ProfilePage";
 import CheckoutPage from "../pages/CheckoutPage";
 import PaymentPage from "../pages/PaymentPage";
+import UserInboxPage from "../pages/UserInboxPage.jsx";
 
 
 export {
@@ -31,6 +32,7 @@ export {
     CheckoutPage,
     PaymentPage,
     OrderSuccessPage,
+    UserInboxPage,
     
 
 }

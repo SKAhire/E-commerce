@@ -116,15 +116,15 @@ router.post("/activation", catchAsyncError(async (req, res, next) => {
 
 // shop login
 
-router.post("/login-shop", catchAsyncError(async(req, res, next)=>{
+router.post("/login-shop", catchAsyncError(async (req, res, next) => {
     try {
-        const {email, password} = req.body;
-        if(!email || !password){
+        const { email, password } = req.body;
+        if (!email || !password) {
             return next(new ErrorHandler("Please provide valid credentials!", 400))
         }
 
         const shop = await Shop.findOne({ email }).select('+password');
-        if(!shop){
+        if (!shop) {
             return next(new ErrorHandler("User doesn't exist!", 400))
         }
 
@@ -132,7 +132,7 @@ router.post("/login-shop", catchAsyncError(async(req, res, next)=>{
         const passValid = await bcrypt.compare(password, shop.password);
 
 
-        if(!passValid){
+        if (!passValid) {
             return next(new ErrorHandler("Please provide valid credentials!", 400))
         }
 
@@ -146,10 +146,10 @@ router.post("/login-shop", catchAsyncError(async(req, res, next)=>{
 
 //load Shop
 
-router.get("/get-shop", isShopAuthenticated, catchAsyncError(async(req, res, next)=> {
+router.get("/get-shop", isShopAuthenticated, catchAsyncError(async (req, res, next) => {
     try {
         const shop = await Shop.findById(req.shop.id)
-        if(!shop){
+        if (!shop) {
             return next(new ErrorHandler("Shop doesn't exist!", 400))
         }
 
@@ -161,10 +161,10 @@ router.get("/get-shop", isShopAuthenticated, catchAsyncError(async(req, res, nex
         return next(new ErrorHandler(error.message, 500));
     }
 }))
-router.get("/get-shop-info/:id", catchAsyncError(async(req, res, next)=> {
+router.get("/get-shop-info/:id", catchAsyncError(async (req, res, next) => {
     try {
         const shop = await Shop.findById(req.params.id)
-        if(!shop){
+        if (!shop) {
             return next(new ErrorHandler("Shop doesn't exist!", 400))
         }
 
@@ -178,7 +178,7 @@ router.get("/get-shop-info/:id", catchAsyncError(async(req, res, next)=> {
 }))
 
 // logout from shop
-router.get("/logout-shop", isShopAuthenticated, catchAsyncError(async(req, res, next) => {
+router.get("/logout-shop", isShopAuthenticated, catchAsyncError(async (req, res, next) => {
     try {
         res.cookie("shop_token", null, {
             expires: new Date(Date.now()),
@@ -201,60 +201,79 @@ router.put(
     isShopAuthenticated,
     upload.single("image"),
     catchAsyncError(async (req, res, next) => {
-      try {
-        const existsUser = await Shop.findById(req.shop._id);
-  
-        const existAvatarPath = `uploads/${existsUser.avatar}`;
-  
-        // fs.unlinkSync(existAvatarPath);
-  
-        const fileUrl = path.join(req.file.filename);
-  
-        const shop = await Shop.findByIdAndUpdate(req.shop._id, {
-          avatar: fileUrl,
-        });
-  
-        res.status(200).json({
-          success: true,
-          shop,
-        });
-      } catch (error) {
-        return next(new ErrorHandler(error.message, 500));
-      }
+        try {
+            const existsUser = await Shop.findById(req.shop._id);
+
+            const existAvatarPath = `uploads/${existsUser.avatar}`;
+
+            // fs.unlinkSync(existAvatarPath);
+
+            const fileUrl = path.join(req.file.filename);
+
+            const shop = await Shop.findByIdAndUpdate(req.shop._id, {
+                avatar: fileUrl,
+            });
+
+            res.status(200).json({
+                success: true,
+                shop,
+            });
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500));
+        }
     })
-  );
-  
-  // update seller info
-  router.put(
+);
+
+// update seller info
+router.put(
     "/update-shop-info",
     isShopAuthenticated,
     catchAsyncError(async (req, res, next) => {
-      try {
-        const { name, description, address, phoneNumber, zipCode } = req.body;
-  
-        const shop = await Shop.findOne(req.shop._id);
-  
-        if (!shop) {
-          return next(new ErrorHandler("User not found", 400));
+        try {
+            const { name, description, address, phoneNumber, zipCode } = req.body;
+
+            const shop = await Shop.findOne(req.shop._id);
+
+            if (!shop) {
+                return next(new ErrorHandler("User not found", 400));
+            }
+
+            shop.name = name;
+            shop.description = description;
+            shop.address = address;
+            shop.phoneNumber = phoneNumber;
+            shop.zipCode = zipCode;
+
+            await shop.save();
+
+            res.status(201).json({
+                success: true,
+                shop,
+            });
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500));
         }
-  
-        shop.name = name;
-        shop.description = description;
-        shop.address = address;
-        shop.phoneNumber = phoneNumber;
-        shop.zipCode = zipCode;
-  
-        await shop.save();
-  
-        res.status(201).json({
-          success: true,
-          shop,
-        });
-      } catch (error) {
-        return next(new ErrorHandler(error.message, 500));
-      }
     })
-  );
-  
+);
+
+// find user information with the userId
+router.get(
+    "/shop-info/:id",
+    catchAsyncError(async (req, res, next) => {
+        try {
+            const shop = await Shop.findById(req.params.id);
+
+            if (!shop) {
+                console.log("no user found")
+            }
+            res.status(201).json({
+                success: true,
+                shop,
+            });
+        } catch (error) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    })
+);
 
 module.exports = router
